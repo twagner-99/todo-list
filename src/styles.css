@@ -1,3 +1,25 @@
-div {
-    color: blueviolet;
+* {
+    margin: 0;
+    font-size: 1rem;
+}
+
+:root {
+    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    line-height: 1.5;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+body {
+    display: grid;
+    grid-template-columns: 1fr 8fr;
+    min-height: 100vh;
+}
+
+.sidebar {
+    
+    border: 1px solid black;
 }

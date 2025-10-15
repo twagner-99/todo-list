@@ -23,8 +23,7 @@ const getTodoList = () => todoList;
 const displayTodoList = () => console.log(getTodoList());
 
 const editTodoItem = (uuid, property, newValue) => {    // Should I use toString() here? When using forms it'll always be string so probably not needed.
-    const latestTodoList = getTodoList();
-    for (let currentTodoItem of latestTodoList) {   // Using for...of b/c ability to break.
+    for (let currentTodoItem of getTodoList()) {   // Using for...of b/c ability to break.
         if (currentTodoItem.uuid === uuid) {
             currentTodoItem[property] = newValue;   // Bracket notation b/c property is essentially a variable.
             break;
@@ -33,12 +32,14 @@ const editTodoItem = (uuid, property, newValue) => {    // Should I use toString
 }
 
 const deleteTodoItem = (uuid) => {
-    const latestTodoList = getTodoList();
-    latestTodoList.forEach((todoItem, index) => {   // Using forEach() b/c ability to easily get index.
-        if (todoItem.uuid === uuid) {
-            latestTodoList.splice(index, 1);
+    const currentTodoList = getTodoList();           // Store in variable to prevent running function over and over.
+    for (let currentTodoItem of currentTodoList) {   // Updated to for...of b/c ability to break.
+        if (currentTodoItem.uuid === uuid) {
+            const index = currentTodoList.indexOf(currentTodoItem);
+            currentTodoList.splice(index, 1);
+            break;
         }
-    })
+    }
 }
 
 // Decide if I want all of these to be fn expressions or change to fn declarations.

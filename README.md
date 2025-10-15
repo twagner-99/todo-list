@@ -25,6 +25,7 @@ Todo List
 - Delete a todo, with a confirmation dialog
 - Should be able to see when todo is due from this list
 - Would be cool to click and drag to diff projects
+- Would be cool to delete entire projects and all the todos associated
 
 Individual Todo UI
 - Opens after user creates todo item from todo list UI

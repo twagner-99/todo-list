@@ -19,7 +19,6 @@ const createTodoItem = (title, description, dueDate, priority, project) => {
     let key = todoItem.project;
 
     if (!(key in todoList)) {
-        console.log('test');
         const newProject = todoItem.project;
         todoList[newProject] = [];
         todoList[newProject].push(todoItem);
@@ -35,21 +34,26 @@ const getTodoList = () => todoList;
 const displayTodoList = () => console.log(getTodoList());
 
 const editTodoItem = (uuid, property, newValue) => {
-    for (let currentTodoItem of getTodoList()) {   // Using for...of b/c ability to break.
-        if (currentTodoItem.uuid === uuid) {
-            currentTodoItem[property] = newValue;   // Bracket notation b/c property is essentially a variable.
-            break;
+    const currentTodoList = getTodoList();
+    for (let key in currentTodoList) {
+        for (let currentTodoItem of currentTodoList[key]) {   // Using for...of b/c ability to break.
+            if (currentTodoItem.uuid === uuid) {
+                currentTodoItem[property] = newValue;   // Bracket notation b/c property is essentially a variable.
+                break;
+            }
         }
     }
 }
 
 const deleteTodoItem = (uuid) => {
     const currentTodoList = getTodoList();           // Store in variable to prevent running function over and over.
-    for (let currentTodoItem of currentTodoList) {   // Updated to for...of b/c ability to break.
-        if (currentTodoItem.uuid === uuid) {
-            const index = currentTodoList.indexOf(currentTodoItem);
-            currentTodoList.splice(index, 1);
-            break;
+    for (let key in currentTodoList) {
+        for (let currentTodoItem of currentTodoList[key]) {   // Updated to for...of b/c ability to break.
+            if (currentTodoItem.uuid === uuid) {
+                const index = currentTodoList[key].indexOf(currentTodoItem);
+                currentTodoList[key].splice(index, 1);
+                break;
+            }
         }
     }
 }

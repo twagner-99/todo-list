@@ -2,27 +2,39 @@ import "./styles.css"
 
 // TODO CLASS CREATION
 const TodoItemCreator = class {
-    constructor(title, description, dueDate, priority) {
+    constructor(title, description, dueDate, priority, project) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
+        this.project = project;
         this.uuid = self.crypto.randomUUID();
     }
 };
 
-const todoList = [];
+const todoList = {};
 
-const createTodoItem = (title, description, dueDate, priority) => {
-    let todoItem = new TodoItemCreator(title, description, dueDate, priority);
-    todoList.push(todoItem); // Should addToTodoList be its own fn? If we wanted to, we'd have to return the todoItem. Seems unnecessary.
+const createTodoItem = (title, description, dueDate, priority, project) => {
+    let todoItem = new TodoItemCreator(title, description, dueDate, priority, project);
+    let key = todoItem.project;
+
+    if (!(key in todoList)) {
+        console.log('test');
+        const newProject = todoItem.project;
+        todoList[newProject] = [];
+        todoList[newProject].push(todoItem);
+    }
+
+    else {
+        todoList[key].push(todoItem);
+    }
 }
 
 const getTodoList = () => todoList;
 
 const displayTodoList = () => console.log(getTodoList());
 
-const editTodoItem = (uuid, property, newValue) => {    // Should I use toString() here? When using forms it'll always be string so probably not needed.
+const editTodoItem = (uuid, property, newValue) => {
     for (let currentTodoItem of getTodoList()) {   // Using for...of b/c ability to break.
         if (currentTodoItem.uuid === uuid) {
             currentTodoItem[property] = newValue;   // Bracket notation b/c property is essentially a variable.

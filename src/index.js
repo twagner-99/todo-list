@@ -36,6 +36,10 @@ const getTodoList = () => todoList;
 
 const displayTodoList = () => console.log(getTodoList());
 
+const displayProject = (project) => {
+    console.log(getTodoList()[project]);
+}
+
 const editTodoItem = (uuid, property, newValue) => {
     const currentTodoList = getTodoList();
     for (let key in currentTodoList) {
@@ -68,4 +72,5 @@ window.displayTodoList = displayTodoList;
 window.editTodoItem = editTodoItem;
 window.deleteTodoItem = deleteTodoItem;
 window.addToTodoList = addToTodoList;
+window.displayProject = displayProject;
 

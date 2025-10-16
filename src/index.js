@@ -15,7 +15,10 @@ const TodoItemCreator = class {
 const todoList = {};
 
 const createTodoItem = (title, description, dueDate, priority, project) => {
-    let todoItem = new TodoItemCreator(title, description, dueDate, priority, project);
+    addToTodoList(new TodoItemCreator(title, description, dueDate, priority, project));
+}
+
+const addToTodoList = (todoItem) => {
     let key = todoItem.project;
 
     if (!(key in todoList)) {
@@ -64,4 +67,5 @@ window.createTodoItem = createTodoItem;
 window.displayTodoList = displayTodoList;
 window.editTodoItem = editTodoItem;
 window.deleteTodoItem = deleteTodoItem;
+window.addToTodoList = addToTodoList;
 

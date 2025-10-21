@@ -1,67 +1,19 @@
 const TodoItemCreator = class {
-    constructor(title, description, dueDate, priority, project) {
+    constructor(title, description, dueDate, priority) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
-        this.project = project;
         this.uuid = self.crypto.randomUUID();
+        // Probably will need to add property for completetionStatus = true or false
+        // that will toggle when checkboxes are checked 
     }
 };
 
-const todoList = {};
-
-const createTodoItem = (title, description, dueDate, priority, project) => {
-    addToTodoList(new TodoItemCreator(title, description, dueDate, priority, project));
-}
-
-const addToTodoList = (todoItem) => {
-    let key = todoItem.project;
-
-    if (!(key in todoList)) {
-        const newProject = todoItem.project;
-        todoList[newProject] = [];
-        todoList[newProject].push(todoItem);
-    }
-
-    else {
-        todoList[key].push(todoItem);
-    }
-}
-
-// const getTodoList = () => todoList;
-
-const displayTodoList = () => console.log(todoList);
-
-const displayProject = (project) => {
-    console.log(todoList[project]);
-}
-
-const editTodoItem = (uuid, property, newValue) => {
-    for (let key in todoList) {
-        for (let currentTodoItem of todoList[key]) {   // Using for...of b/c ability to break.
-            if (currentTodoItem.uuid === uuid) {
-                currentTodoItem[property] = newValue;   // Bracket notation b/c property is essentially a variable.
-                break;
-            }
-        }
-    }
-}
-
-const deleteTodoItem = (uuid) => {
-    for (let key in todoList) {
-        for (let currentTodoItem of todoList[key]) {   // Updated to for...of b/c ability to break.
-            if (currentTodoItem.uuid === uuid) {
-                const index = todoList[key].indexOf(currentTodoItem);
-                todoList[key].splice(index, 1);
-                break;
-            }
-        }
-    }
-}
+const todoList = {"My Stuff": [],};     // "My Stuff" is default project.
 
 const createProject = (project) => {
-    if (!(project in todoList)) {
+    if (!(project in todoList)) {   // If project doesn't exist yet, create it.
         todoList[project] = [];
     }
 
@@ -70,16 +22,62 @@ const createProject = (project) => {
     }
 }
 
-const deleteProject = (project) => {
+const createTodoItem = (title, description, dueDate, priority, project) => {
+    const todoItem = new TodoItemCreator(title, description, dueDate, priority);
+    todoList[project].push(todoItem);
+
+    // Once UI is available, user will only be able to select existing projects
+    // from a drop-down so there's no risk of them trying to select one that doesn't exist.
+    // If they do want one that doesn't exist, they'll have an option to create it.
+}
+
+const getTodoItemInfo = (uuid) => { // LOOK INTO BREAK STATEMENTS. NEED TO QUIT AFTER RETURN.
     for (let key in todoList) {
-        if (key === project) {
-            delete todoList[key];
-            break;
+        for (let currentTodoItem of todoList[key]) {
+            if (currentTodoItem.uuid === uuid) {
+                const index = todoList[key].indexOf(currentTodoItem);
+                return {currentTodoItem,
+                        key,
+                        index,
+                };
+            }
         }
     }
 }
 
-export { createTodoItem, displayTodoList, editTodoItem, deleteTodoItem, addToTodoList, displayProject, createProject, deleteProject };
+const displayTodoList = () => console.log(todoList);
+
+const displayProject = (project) => {
+    console.log(todoList[project]);
+}
+
+const editTodoItem = (uuid, property, newValue) => {
+    const todoItem = getTodoItemInfo(uuid).currentTodoItem;
+    todoItem[property] = newValue;
+}
+
+const deleteTodoItem = (uuid) => {
+    const key = getTodoItemInfo(uuid).key;
+    const index = getTodoItemInfo(uuid).index;
+
+    todoList[key].splice(index, 1);
+}
+
+
+const deleteProject = (project) => {    // UI won't have option to delete default project "My Stuff"
+    for (let key in todoList) {
+        if (key === project) {
+            delete todoList[key];
+            break; // LOOK INTO BREAK STATEMENTS. NEED TO QUIT AFTER RETURN.
+        }
+    }
+}
+
+// NEED TO ADD THESE FUNCTIONS - 
+    // editProject
+    // moveTodoItem
+
+export { createProject, createTodoItem, getTodoItemInfo, displayTodoList, displayProject, editTodoItem, deleteTodoItem, deleteProject };
 
 // Need ability to: edit project name
     // That will then update the project of the item, too

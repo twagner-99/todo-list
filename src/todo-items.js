@@ -29,18 +29,17 @@ const addToTodoList = (todoItem) => {
     }
 }
 
-const getTodoList = () => todoList;
+// const getTodoList = () => todoList;
 
-const displayTodoList = () => console.log(getTodoList());
+const displayTodoList = () => console.log(todoList);
 
 const displayProject = (project) => {
-    console.log(getTodoList()[project]);
+    console.log(todoList[project]);
 }
 
 const editTodoItem = (uuid, property, newValue) => {
-    const currentTodoList = getTodoList();
-    for (let key in currentTodoList) {
-        for (let currentTodoItem of currentTodoList[key]) {   // Using for...of b/c ability to break.
+    for (let key in todoList) {
+        for (let currentTodoItem of todoList[key]) {   // Using for...of b/c ability to break.
             if (currentTodoItem.uuid === uuid) {
                 currentTodoItem[property] = newValue;   // Bracket notation b/c property is essentially a variable.
                 break;
@@ -50,36 +49,41 @@ const editTodoItem = (uuid, property, newValue) => {
 }
 
 const deleteTodoItem = (uuid) => {
-    const currentTodoList = getTodoList();           // Store in variable to prevent running function over and over.
-    for (let key in currentTodoList) {
-        for (let currentTodoItem of currentTodoList[key]) {   // Updated to for...of b/c ability to break.
+    for (let key in todoList) {
+        for (let currentTodoItem of todoList[key]) {   // Updated to for...of b/c ability to break.
             if (currentTodoItem.uuid === uuid) {
-                const index = currentTodoList[key].indexOf(currentTodoItem);
-                currentTodoList[key].splice(index, 1);
+                const index = todoList[key].indexOf(currentTodoItem);
+                todoList[key].splice(index, 1);
                 break;
             }
         }
     }
 }
 
+const createProject = (project) => {
+    if (!(project in todoList)) {
+        todoList[project] = [];
+    }
+
+    else {
+        console.log('Project name already exists. Please enter a new name');
+    }
+}
+
 const deleteProject = (project) => {
-    const currentTodoList = getTodoList();
-    for (let key in currentTodoList) {
+    for (let key in todoList) {
         if (key === project) {
-            delete currentTodoList[key];
+            delete todoList[key];
             break;
         }
     }
 }
 
-// Decide if I want all of these to be fn expressions or change to fn declarations.
+export { createTodoItem, displayTodoList, editTodoItem, deleteTodoItem, addToTodoList, displayProject, createProject, deleteProject };
 
-// window.createTodoItem = createTodoItem;
-// window.displayTodoList = displayTodoList;
-// window.editTodoItem = editTodoItem;
-// window.deleteTodoItem = deleteTodoItem;
-// window.addToTodoList = addToTodoList;
-// window.displayProject = displayProject;
-
-export { createTodoItem, displayTodoList, editTodoItem, deleteTodoItem, addToTodoList, displayProject, deleteProject };
-
+// Need ability to: edit project name
+    // That will then update the project of the item, too
+// Need logic that if user updates project of todo item, it goes where it needs to
+    // You can only select projects that already exist from a dropdown
+    // And if it doesn't exist, can click add new project option
+        // I.e. when creating todoItem, if project doesn't exist, create it

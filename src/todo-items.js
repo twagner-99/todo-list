@@ -62,12 +62,24 @@ const deleteTodoItem = (uuid) => {
     }
 }
 
+const deleteProject = (project) => {
+    const currentTodoList = getTodoList();
+    for (let key in currentTodoList) {
+        if (key === project) {
+            delete currentTodoList[key];
+            break;
+        }
+    }
+}
+
 // Decide if I want all of these to be fn expressions or change to fn declarations.
 
-window.createTodoItem = createTodoItem;
-window.displayTodoList = displayTodoList;
-window.editTodoItem = editTodoItem;
-window.deleteTodoItem = deleteTodoItem;
-window.addToTodoList = addToTodoList;
-window.displayProject = displayProject;
+// window.createTodoItem = createTodoItem;
+// window.displayTodoList = displayTodoList;
+// window.editTodoItem = editTodoItem;
+// window.deleteTodoItem = deleteTodoItem;
+// window.addToTodoList = addToTodoList;
+// window.displayProject = displayProject;
+
+export { createTodoItem, displayTodoList, editTodoItem, deleteTodoItem, addToTodoList, displayProject, deleteProject };
 

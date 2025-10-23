@@ -19,7 +19,7 @@ body {
     min-height: 100vh;
 }
 
-.sidebar {
+#sidebar {
     
     border: 1px solid black;
 }

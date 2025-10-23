@@ -31,8 +31,10 @@ const createTodoItem = (title, description, dueDate, priority, project) => {
     // If they do want one that doesn't exist, they'll have an option to create it.
 }
 
+const getTodoList = () => todoList;
+
 const getTodoItemInfo = (uuid) => {
-    for (let key in todoList) {
+    for (let key in todoList) {                 // Change verbiage? From key to project?
         for (let todoItem of todoList[key]) {
             if (todoItem.uuid === uuid) {
                 const index = todoList[key].indexOf(todoItem);
@@ -45,11 +47,11 @@ const getTodoItemInfo = (uuid) => {
     }
 }
 
-const displayTodoList = () => console.log(todoList);
+// const displayTodoList = () => console.log(todoList);
 
-const displayProject = (project) => {
-    console.log(todoList[project]);
-}
+// const displayProject = (project) => {
+//     console.log(todoList[project]);
+// }
 
 const editTodoItem = (uuid, property, newValue) => {
     const todoItemToEdit = getTodoItemInfo(uuid).todoItem;
@@ -86,4 +88,4 @@ const deleteProject = (project) => {    // UI won't have option to delete defaul
     delete todoList[project];
 }
 
-export { createProject, createTodoItem, getTodoItemInfo, displayTodoList, displayProject, editTodoItem, editProjectName, moveTodoItem, deleteTodoItem, deleteProject };
+export { createProject, createTodoItem, getTodoList, getTodoItemInfo, editTodoItem, editProjectName, moveTodoItem, deleteTodoItem, deleteProject };

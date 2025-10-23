@@ -18,7 +18,7 @@ const createProject = (project) => {
     }
 
     else {
-        console.log('Project name already exists. Please enter a new name');
+        console.log('Project name already exists. Please enter a new name');    // Will eventually be returned instead of console.logged
     }
 }
 
@@ -31,12 +31,12 @@ const createTodoItem = (title, description, dueDate, priority, project) => {
     // If they do want one that doesn't exist, they'll have an option to create it.
 }
 
-const getTodoItemInfo = (uuid) => { // LOOK INTO BREAK STATEMENTS. NEED TO QUIT AFTER RETURN.
+const getTodoItemInfo = (uuid) => {
     for (let key in todoList) {
-        for (let currentTodoItem of todoList[key]) {
-            if (currentTodoItem.uuid === uuid) {
-                const index = todoList[key].indexOf(currentTodoItem);
-                return {currentTodoItem,
+        for (let todoItem of todoList[key]) {
+            if (todoItem.uuid === uuid) {
+                const index = todoList[key].indexOf(todoItem);
+                return {todoItem,
                         key,
                         index,
                 };
@@ -52,36 +52,38 @@ const displayProject = (project) => {
 }
 
 const editTodoItem = (uuid, property, newValue) => {
-    const todoItem = getTodoItemInfo(uuid).currentTodoItem;
-    todoItem[property] = newValue;
+    const todoItemToEdit = getTodoItemInfo(uuid).todoItem;
+    todoItemToEdit[property] = newValue;
+}
+
+const editProjectName = (oldProjectName, newProjectName) => {
+    if (newProjectName in todoList) {  // Could have also chosen if, else statement
+        console.log('Project name already exists. Cannot rename.');     // Will eventually be returned instead of console.logged
+        return;
+    }
+
+    todoList[newProjectName] = todoList[oldProjectName];
+    delete todoList[oldProjectName];
+}
+
+const moveTodoItem = (uuid, project) => {
+    const todoItemToMove = getTodoItemInfo(uuid).todoItem;
+    deleteTodoItem(uuid);
+
+    todoList[project].push(todoItemToMove);
 }
 
 const deleteTodoItem = (uuid) => {
-    const key = getTodoItemInfo(uuid).key;
-    const index = getTodoItemInfo(uuid).index;
+    const todoItemInfo = getTodoItemInfo(uuid);     // Makes sure we only run getTodoItemInfo fn one time
+    const key = todoItemInfo.key;
+    const index = todoItemInfo.index;
 
     todoList[key].splice(index, 1);
 }
 
 
 const deleteProject = (project) => {    // UI won't have option to delete default project "My Stuff"
-    for (let key in todoList) {
-        if (key === project) {
-            delete todoList[key];
-            break; // LOOK INTO BREAK STATEMENTS. NEED TO QUIT AFTER RETURN.
-        }
-    }
+    delete todoList[project];
 }
 
-// NEED TO ADD THESE FUNCTIONS - 
-    // editProject
-    // moveTodoItem
-
-export { createProject, createTodoItem, getTodoItemInfo, displayTodoList, displayProject, editTodoItem, deleteTodoItem, deleteProject };
-
-// Need ability to: edit project name
-    // That will then update the project of the item, too
-// Need logic that if user updates project of todo item, it goes where it needs to
-    // You can only select projects that already exist from a dropdown
-    // And if it doesn't exist, can click add new project option
-        // I.e. when creating todoItem, if project doesn't exist, create it
+export { createProject, createTodoItem, getTodoItemInfo, displayTodoList, displayProject, editTodoItem, editProjectName, moveTodoItem, deleteTodoItem, deleteProject };

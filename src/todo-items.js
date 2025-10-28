@@ -10,7 +10,7 @@ const TodoItemCreator = class {
     }
 };
 
-const todoList = {"My Stuff": [],};     // "My Stuff" is default project.
+const todoList = {default: [],};
 
 const createProject = (project) => {
     if (!(project in todoList)) {   // If project doesn't exist yet, create it.
@@ -23,6 +23,10 @@ const createProject = (project) => {
 }
 
 const createTodoItem = (title, description, dueDate, priority, project) => {
+    if (!(project in todoList)) {   // If project doesn't exist yet, exit.
+        return;
+    }
+    
     const todoItem = new TodoItemCreator(title, description, dueDate, priority);
     todoList[project].push(todoItem);
 
@@ -34,12 +38,12 @@ const createTodoItem = (title, description, dueDate, priority, project) => {
 const getTodoList = () => todoList;
 
 const getTodoItemInfo = (uuid) => {
-    for (let key in todoList) {                 // Change verbiage? From key to project?
-        for (let todoItem of todoList[key]) {
+    for (let project in todoList) {
+        for (let todoItem of todoList[project]) {
             if (todoItem.uuid === uuid) {
-                const index = todoList[key].indexOf(todoItem);
+                const index = todoList[project].indexOf(todoItem);
                 return {todoItem,
-                        key,
+                        project,
                         index,
                 };
             }
@@ -59,7 +63,7 @@ const editTodoItem = (uuid, property, newValue) => {
 }
 
 const editProjectName = (oldProjectName, newProjectName) => {
-    if (newProjectName in todoList) {  // Could have also chosen if, else statement
+    if (newProjectName in todoList) {
         console.log('Project name already exists. Cannot rename.');     // Will eventually be returned instead of console.logged
         return;
     }
@@ -76,15 +80,19 @@ const moveTodoItem = (uuid, project) => {
 }
 
 const deleteTodoItem = (uuid) => {
-    const todoItemInfo = getTodoItemInfo(uuid);     // Makes sure we only run getTodoItemInfo fn one time
-    const key = todoItemInfo.key;
+    const todoItemInfo = getTodoItemInfo(uuid);
+    const project = todoItemInfo.project;
     const index = todoItemInfo.index;
 
-    todoList[key].splice(index, 1);
+    todoList[project].splice(index, 1);
 }
 
 
-const deleteProject = (project) => {    // UI won't have option to delete default project "My Stuff"
+const deleteProject = (project) => {    // UI won't have option to delete default
+    if (project === 'default') {        // project but this is a fail safe.
+        return;
+    }    
+    
     delete todoList[project];
 }
 

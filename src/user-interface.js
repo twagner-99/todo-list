@@ -1,6 +1,6 @@
 import { getTodoList } from "./todo-items";
 
-const displayTodoList = () => {
+const displayTodoListAll = () => {
     const todoList = getTodoList();
 
 
@@ -11,10 +11,13 @@ const displayTodoList = () => {
 
 const displayProject = (project) => {
     const todoList = getTodoList();
+    for (let todoItem of todoList[project]) {
+
+    }
     
     console.log(todoList[project]);
     // On project btn click, project will get passed in so correct project is displayed.
-    // For each todoItem in a project, create divs and then rednerTodoItems fn
+    // For each todoItem in a project, create a heading and divs and then rednerTodoItems fn
 
 }
 
@@ -24,4 +27,3 @@ const renderTodoItems = () => {
 // get todoList, cycle thru all items and display
 // Under all items, we need to show My Stuff, and any other projects
 // Under individual projects, only show that stuff
-// Rename "My Stuff" to "default"

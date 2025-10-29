@@ -7,14 +7,16 @@
 </head>
 <body>
     <div id="sidebar">
-        <h1>Projects <button id="add-project-btn">+</button></h1>
+        <h1 class="inline-block">Projects </h1>
+        <button id="add-project-btn">+</button>
         <nav>
             <button id="allItemsBtn">All Items</button>
             <!-- All other project btns will be dynamically created with JS -->
         </nav>
     </div>
     <div id="content">
-        <h1 id="project-name">All Items <button id="edit-project-btn">...</button></h1> <!-- When we update textContent, will btn get overridden? -->
+        <h1 id="project-heading" class="inline-block">All Items</h1> <!-- Header text dynamically updated with JS -->
+        <button id="edit-project-btn">...</button>
         <div id="todo-list"></div>  <!-- All todo list content will be dynamically created with JS -->
         <button id="add-todo-item-btn">+ Add</button>
     </div>

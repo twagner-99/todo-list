@@ -8,19 +8,30 @@ const displayProjectsAll = () => {
     
     const todoList = getTodoList();     // Do this each time to get current snapshot?
     for (let project in todoList) {
-        const projectDiv = renderProjectAndSubheader(project);
+        const projectDiv = renderProjectsAll(project);
         todoListDiv.appendChild(projectDiv);
     }
 }
 
 const displayProjectSingle = (project) => {
     projectHeadingMain.textContent = project;
-
-    const projectDiv = renderProject(project);
+    const projectDiv = renderProjectSingle(project);
     todoListDiv.appendChild(projectDiv);
 }
 
-const renderProject = (project) => {
+const renderProjectsAll = (project) => {
+    const projectDiv = renderProjectSingle(project);
+
+    if (!(project === 'default')) {
+        const projectSubheader = document.createElement('h2');
+        projectSubheader.textContent = project;
+        projectDiv.prepend(projectSubheader);
+    }
+
+    return projectDiv;
+}
+
+const renderProjectSingle = (project) => {
     const projectDiv = document.createElement('div');
     projectDiv.id = project;
 
@@ -42,16 +53,6 @@ const renderTodoItem = (todoItem) => {
 
     todoItemDiv.appendChild(todoItemPara);
     return todoItemDiv;
-}
-
-const renderProjectAndSubheader = (project) => {
-    const projectHeader = document.createElement('h2');
-    const projectDiv = renderProject(project);
-
-    projectHeader.textContent = project;
-    projectDiv.prepend(projectHeader);
-
-    return projectDiv;
 }
 
 export { displayProjectsAll, displayProjectSingle };

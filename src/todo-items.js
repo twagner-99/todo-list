@@ -51,12 +51,6 @@ const getTodoItemInfo = (uuid) => {
     }
 }
 
-// const displayTodoList = () => console.log(todoList);
-
-// const displayProject = (project) => {
-//     console.log(todoList[project]);
-// }
-
 const editTodoItem = (uuid, property, newValue) => {
     const todoItemToEdit = getTodoItemInfo(uuid).todoItem;
     todoItemToEdit[property] = newValue;

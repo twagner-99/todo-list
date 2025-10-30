@@ -4,6 +4,7 @@ const todoListDiv = document.querySelector('#todo-list');
 const projectHeadingMain = document.querySelector('#project-heading');
 
 const displayProjectsAll = () => {
+    removeAllChildNodes(todoListDiv);
     projectHeadingMain.textContent = 'All Items';
     
     const todoList = getTodoList();     // Do this each time to get current snapshot?
@@ -14,6 +15,7 @@ const displayProjectsAll = () => {
 }
 
 const displayProjectSingle = (project) => {
+    removeAllChildNodes(todoListDiv);
     projectHeadingMain.textContent = project;
     const projectDiv = renderProjectSingle(project);
     todoListDiv.appendChild(projectDiv);
@@ -53,6 +55,12 @@ const renderTodoItem = (todoItem) => {
 
     todoItemDiv.appendChild(todoItemPara);
     return todoItemDiv;
+}
+
+const removeAllChildNodes = (parentNode) => {
+    while (parentNode.lastChild) {
+        parentNode.removeChild(parentNode.lastChild);
+    }
 }
 
 export { displayProjectsAll, displayProjectSingle };

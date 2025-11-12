@@ -14,11 +14,53 @@
             <!-- All other project btns will be dynamically created with JS -->
         </nav>
     </div>
+
     <div id="content">
         <h1 id="project-heading" class="inline-block">All Items</h1> <!-- Header text dynamically updated with JS -->
         <button id="edit-project-btn">...</button>
         <div id="todo-list"></div>  <!-- All todo list content will be dynamically created with JS -->
         <button id="add-todo-item-btn">+ Add</button>
     </div>
+
+    <dialog id="todo-item-modal">
+        <form>
+            <fieldset>
+                <legend>Task Details</legend>
+                <div>
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" required>
+                </div>
+                <div>
+                    <label for="project">Project:</label>
+                    <select id="project" size="3" required>
+                        <option value="default" selected>-</option>
+                        <!-- Additional projects added here with JS -->
+                        <!-- <option value="createNewProject">Create New Project</option>   If selected, create a new project. Future functionality -->
+                    </select>
+                </div>
+                <div>
+                    <label for="date">Due Date:</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div>
+                    <label for="priority">Priority:</label>
+                    <select id="priority" size="3" required>
+                        <option selected>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select>
+                </div>
+            </fieldset>
+            <div id="modal-btns-div">
+                <!-- If creating new todoItem (createNewTodoItemBtns):
+                        - "Cancel" button
+                        - "Create Task" button 
+                    If editing (createEditTodoItemBtns): 
+                        - "Delete Task" button
+                        - "Dischard Changes" button
+                        - "Save Changes" button -->
+            </div>
+        </form>
+    </dialog>
 </body>
 </html>

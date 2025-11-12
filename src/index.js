@@ -1,5 +1,5 @@
 import { createProject, createTodoItem, getTodoItemInfo, editTodoItem, editProjectName, moveTodoItem, deleteTodoItem, deleteProject } from "./todo-items.js";
-import { displayProjectsAll, displayProjectSingle } from "./user-interface.js";
+import { displayProjectsAll, displayProjectSingle, displayModalNew } from "./user-interface.js";
 import "./styles.css"
 
 window.createProject = createProject;
@@ -13,3 +13,4 @@ window.deleteProject = deleteProject;
 
 window.displayProjectsAll = displayProjectsAll;
 window.displayProjectSingle = displayProjectSingle;
+window.displayModalNew = displayModalNew;

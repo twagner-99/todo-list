@@ -2,6 +2,8 @@ import { getTodoList } from "./todo-items";
 
 const todoListDiv = document.querySelector('#todo-list');
 const projectHeadingMain = document.querySelector('#project-heading');
+const todoItemModal = document.querySelector('#todo-item-modal');
+const modalBtnsDiv = document.querySelector('#modal-btns-div');
 
 const displayProjectsAll = () => {
     removeAllChildNodes(todoListDiv);
@@ -9,7 +11,7 @@ const displayProjectsAll = () => {
     
     const todoList = getTodoList();     // Do this each time to get current snapshot?
     for (let project in todoList) {
-        const projectDiv = renderProjectsAll(project);
+        const projectDiv = createProjectsAll(project);
         todoListDiv.appendChild(projectDiv);
     }
 }
@@ -17,12 +19,12 @@ const displayProjectsAll = () => {
 const displayProjectSingle = (project) => {
     removeAllChildNodes(todoListDiv);
     projectHeadingMain.textContent = project;
-    const projectDiv = renderProjectSingle(project);
+    const projectDiv = createProjectSingle(project);
     todoListDiv.appendChild(projectDiv);
 }
 
-const renderProjectsAll = (project) => {
-    const projectDiv = renderProjectSingle(project);
+const createProjectsAll = (project) => {
+    const projectDiv = createProjectSingle(project);
 
     if (!(project === 'default')) {
         const projectSubheader = document.createElement('h2');
@@ -33,20 +35,20 @@ const renderProjectsAll = (project) => {
     return projectDiv;
 }
 
-const renderProjectSingle = (project) => {
+const createProjectSingle = (project) => {
     const projectDiv = document.createElement('div');
     projectDiv.id = project;
 
     const todoList = getTodoList();
     for (let todoItem of todoList[project]) {
-        const todoItemDiv = renderTodoItem(todoItem);
+        const todoItemDiv = createTodoItem(todoItem);
         projectDiv.appendChild(todoItemDiv);
     }
 
     return projectDiv;
 }
 
-const renderTodoItem = (todoItem) => {
+const createTodoItem = (todoItem) => {
     const todoItemDiv = document.createElement('div');
     const todoItemPara = document.createElement('p');
 
@@ -63,4 +65,56 @@ const removeAllChildNodes = (parentNode) => {
     }
 }
 
-export { displayProjectsAll, displayProjectSingle };
+const createBtn = (id, text) => {
+    const newBtn = document.createElement('button');
+    newBtn.id = id;
+    newBtn.textContent = text;
+
+    return newBtn;
+}
+
+const createTodoItemBtnsNew = () => {
+    const newTodoItemBtns = [];
+    
+    newTodoItemBtns.push(createBtn('cancelBtn', 'Cancel'));
+    newTodoItemBtns.push(createBtn('createTodoItemBtn', 'Create Task'));
+    
+    return newTodoItemBtns;
+}
+
+const createTodoItemBtnsEdit = () => {
+    const editTodoItemBtns = [];
+    
+    editTodoItemBtns.push(createBtn('deleteBtn', 'Delete Task'));
+    editTodoItemBtns.push(createBtn('discardBtn', 'Discard Changes'));
+    editTodoItemBtns.push(createBtn('saveBtn', 'Save Changes'));
+    
+    return editTodoItemBtns;
+}
+
+const appendChildren = (parentNode, children) => {
+    children.forEach((child) => {
+        parentNode.appendChild(child);
+    });
+}
+
+const displayModalNew = () => {
+    appendChildren(modalBtnsDiv, createTodoItemBtnsNew()); 
+    todoItemModal.showModal();
+}
+
+const displayModalEdit = () => {
+    appendChildren(modalBtnsDiv, createTodoItemBtnsEdit());
+    todoItemModal.showModal();
+}
+
+const createProjectDropdowns = () => {
+
+}
+
+export { displayProjectsAll, displayProjectSingle, displayModalNew };
+
+// When user adds new project, auto-load it right after
+// When add is clicked user can select what project
+    // But the default will either be deault when in 
+    // All Items or whatever project they're currently in

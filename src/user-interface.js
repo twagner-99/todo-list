@@ -4,6 +4,7 @@ const todoListDiv = document.querySelector('#todo-list');
 const projectHeadingMain = document.querySelector('#project-heading');
 const todoItemModal = document.querySelector('#todo-item-modal');
 const modalBtnsDiv = document.querySelector('#modal-btns-div');
+const projectDropdown = document.querySelector('#project-dropdown')
 
 const displayProjectsAll = () => {
     removeAllChildNodes(todoListDiv);
@@ -98,19 +99,30 @@ const appendChildren = (parentNode, children) => {
     });
 }
 
-const displayModalNew = () => {
-    appendChildren(modalBtnsDiv, createTodoItemBtnsNew()); 
+const createProjectDropdowns = () => {
+    const todoList = getTodoList();
+    for (let project in todoList) {
+        if (project === 'default') {
+            return;
+        }
+
+        const projectOption = document.createElement('option');
+        projectOption.textContent = project;
+        projectDropdown.appendChild(projectOption);
+    }
+}
+const displayModalNew = () => {                            // These could be put in a single fn with an if statement... but then we have to query the e param
+    appendChildren(modalBtnsDiv, createTodoItemBtnsNew()); // This way, we just run one when one btn is clicked, and the other when another btn is clicked.
+    createProjectDropdowns();                              // Seems better for separation for DOM to do it this way.
     todoItemModal.showModal();
 }
 
 const displayModalEdit = () => {
     appendChildren(modalBtnsDiv, createTodoItemBtnsEdit());
+    createProjectDropdowns();
     todoItemModal.showModal();
 }
 
-const createProjectDropdowns = () => {
-
-}
 
 export { displayProjectsAll, displayProjectSingle, displayModalNew };
 

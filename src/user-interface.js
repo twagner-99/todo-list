@@ -99,32 +99,41 @@ const appendChildren = (parentNode, children) => {
     });
 }
 
-const createProjectDropdowns = () => {
+const addProjectDropdownOptions = () => {
     const todoList = getTodoList();
     for (let project in todoList) {
-        if (project === 'default') {
-            return;
+        if (project !== 'default') {
+            const projectOption = document.createElement('option');
+            projectOption.value = project;
+            projectOption.textContent = project;
+            projectDropdown.appendChild(projectOption);
         }
-
-        const projectOption = document.createElement('option');
-        projectOption.textContent = project;
-        projectDropdown.appendChild(projectOption);
     }
 }
+
+const deleteProjectDropdownOptions = (project) => {     // might end up needing to be uuid from whatever we click. then project can be looked up.
+    if (project === 'default') {    // Not allowed to get rid of default
+        return;
+    }
+
+    const projectOption = document.querySelector(`[value="${project}"]`);
+    projectDropdown.removeChild(projectOption);
+}
+
 const displayModalNew = () => {                            // These could be put in a single fn with an if statement... but then we have to query the e param
     appendChildren(modalBtnsDiv, createTodoItemBtnsNew()); // This way, we just run one when one btn is clicked, and the other when another btn is clicked.
-    createProjectDropdowns();                              // Seems better for separation for DOM to do it this way.
+    addProjectDropdownOptions();                           // Seems better for separation for DOM to do it this way.
     todoItemModal.showModal();
 }
 
 const displayModalEdit = () => {
     appendChildren(modalBtnsDiv, createTodoItemBtnsEdit());
-    createProjectDropdowns();
+    addProjectDropdownOptions();
     todoItemModal.showModal();
 }
 
 
-export { displayProjectsAll, displayProjectSingle, displayModalNew };
+export { displayProjectsAll, displayProjectSingle, displayModalNew, deleteProjectDropdownOptions };
 
 // When user adds new project, auto-load it right after
 // When add is clicked user can select what project

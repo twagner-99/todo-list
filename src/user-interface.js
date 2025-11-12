@@ -4,7 +4,8 @@ const todoListDiv = document.querySelector('#todo-list');
 const projectHeadingMain = document.querySelector('#project-heading');
 const todoItemModal = document.querySelector('#todo-item-modal');
 const modalBtnsDiv = document.querySelector('#modal-btns-div');
-const projectDropdown = document.querySelector('#project-dropdown')
+const projectDropdown = document.querySelector('#project-dropdown');
+const navBar = document.querySelector('nav');
 
 const displayProjectsAll = () => {
     removeAllChildNodes(todoListDiv);
@@ -58,6 +59,16 @@ const createTodoItem = (todoItem) => {
 
     todoItemDiv.appendChild(todoItemPara);
     return todoItemDiv;
+}
+
+const addProjectBtn = (project) => {
+    const projectBtn = createBtn(project, project);
+    navBar.appendChild(projectBtn);
+}
+
+const deleteProjectBtn = (project) => {
+    const projectBtn = document.querySelector(`button[id=${project}]`);
+    navBar.removeChild(projectBtn);
 }
 
 const removeAllChildNodes = (parentNode) => {
@@ -133,7 +144,7 @@ const displayModalEdit = () => {
 }
 
 
-export { displayProjectsAll, displayProjectSingle, displayModalNew, deleteProjectDropdownOptions };
+export { displayProjectsAll, displayProjectSingle, displayModalNew, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn };
 
 // When user adds new project, auto-load it right after
 // When add is clicked user can select what project

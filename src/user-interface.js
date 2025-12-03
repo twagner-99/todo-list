@@ -1,4 +1,4 @@
-import { getTodoList } from "./todo-items";
+import { getTodoList, createTodoItem, deleteTodoItem, editTodoItem } from "./todo-items";
 
 const todoListDiv = document.querySelector('#todo-list');
 const projectHeadingMain = document.querySelector('#project-heading');
@@ -43,14 +43,14 @@ const createProjectSingle = (project) => {
 
     const todoList = getTodoList();
     for (let todoItem of todoList[project]) {
-        const todoItemDiv = createTodoItem(todoItem);
+        const todoItemDiv = createTodoItemDiv(todoItem);
         projectDiv.appendChild(todoItemDiv);
     }
 
     return projectDiv;
 }
 
-const createTodoItem = (todoItem) => {
+const createTodoItemDiv = (todoItem) => {
     const todoItemDiv = document.createElement('div');
     const todoItemPara = document.createElement('p');
 
@@ -77,32 +77,55 @@ const removeAllChildNodes = (parentNode) => {
     }
 }
 
-const createBtn = (id, text) => {
+const createBtn = (id, text, type, purpose) => {
     const newBtn = document.createElement('button');
     newBtn.id = id;
     newBtn.textContent = text;
+    newBtn.type = type;
+    newBtn.dataset.purpose = purpose;
 
     return newBtn;
 }
 
-const createTodoItemBtnsNew = () => {
-    const newTodoItemBtns = [];
-    
-    newTodoItemBtns.push(createBtn('cancelBtn', 'Cancel'));
-    newTodoItemBtns.push(createBtn('createTodoItemBtn', 'Create Task'));
-    
-    return newTodoItemBtns;
-}
+const newTodoItemBtns = [];
+const editTodoItemBtns = [];
 
-const createTodoItemBtnsEdit = () => {
-    const editTodoItemBtns = [];
+const createTodoItemBtns = (function() {
+    newTodoItemBtns.push(createBtn('cancelBtn', 'Cancel', 'button', 'closeModal'));
+    newTodoItemBtns.push(createBtn('createTodoItemBtn', 'Create Task', 'submit', 'createTodoItem'));
     
-    editTodoItemBtns.push(createBtn('deleteBtn', 'Delete Task'));
-    editTodoItemBtns.push(createBtn('discardBtn', 'Discard Changes'));
-    editTodoItemBtns.push(createBtn('saveBtn', 'Save Changes'));
-    
-    return editTodoItemBtns;
-}
+    editTodoItemBtns.push(createBtn('deleteBtn', 'Delete Task', 'button', 'deleteTodoItem'));
+    editTodoItemBtns.push(createBtn('discardBtn', 'Discard Changes', 'button', 'closeModal'));
+    editTodoItemBtns.push(createBtn('saveBtn', 'Save Changes', 'submit', 'saveFormValues'));
+})();
+
+// NEED TO ADD AUTOFOCU. ADD OPTIONAL PARAM AND ADD TO SAVEFORMVALUE BUTTONS? OR CANCEL BUTTONS?
+
+const addEventListenersToBtns = (btns) => {
+    for (let btn of btns) {
+        if (btn.dataset.purpose === 'closeModal') {
+            btn.addEventListener('click', () => todoItemModal.close());
+        }
+
+        else if (btn.dataset.purpose === 'deleteTodoItem') {
+            // Add code here using deleteTodoItem(uuid)
+            // the todoItemDivs have a dataset.uuid
+        }
+
+        else if (btn.dataset.purpose === 'createTodoItem') {
+            // Add code here using createTodoItem(title, description, dueDate, priority, project)
+            // All params will come from the form the user fills out
+        }
+
+        else {
+            // Add code here using editTodoItem(uuid, property, newValue)
+            // All params will come from the form the user fills out
+        }
+    }
+};
+
+addEventListenersToBtns(newTodoItemBtns);
+addEventListenersToBtns(editTodoItemBtns);
 
 const appendChildren = (parentNode, children) => {
     children.forEach((child) => {
@@ -113,7 +136,7 @@ const appendChildren = (parentNode, children) => {
 const addProjectDropdownOptions = () => {
     const todoList = getTodoList();
     for (let project in todoList) {
-        if (project !== 'default') {
+        if (project !== 'default') {    // No if project === default return statment b/c default is always there.
             const projectOption = document.createElement('option');
             projectOption.value = project;
             projectOption.textContent = project;
@@ -123,7 +146,7 @@ const addProjectDropdownOptions = () => {
 }
 
 const deleteProjectDropdownOptions = (project) => {     // might end up needing to be uuid from whatever we click. then project can be looked up.
-    if (project === 'default') {    // Not allowed to get rid of default
+    if (project === 'default') {      // Not allowed to get rid of default
         return;
     }
 
@@ -132,17 +155,20 @@ const deleteProjectDropdownOptions = (project) => {     // might end up needing 
 }
 
 const displayModalNew = () => {                            // These could be put in a single fn with an if statement... but then we have to query the e param
-    appendChildren(modalBtnsDiv, createTodoItemBtnsNew()); // This way, we just run one when one btn is clicked, and the other when another btn is clicked.
+    appendChildren(modalBtnsDiv, newTodoItemBtns); // This way, we just run one when one btn is clicked, and the other when another btn is clicked.
     addProjectDropdownOptions();                           // Seems better for separation for DOM to do it this way.
     todoItemModal.showModal();
 }
 
 const displayModalEdit = () => {
-    appendChildren(modalBtnsDiv, createTodoItemBtnsEdit());
+    appendChildren(modalBtnsDiv, editTodoItemBtns);
     addProjectDropdownOptions();
     todoItemModal.showModal();
 }
 
+// const closeModal = () => {
+//     todoItemModal.close();
+// }
 
 export { displayProjectsAll, displayProjectSingle, displayModalNew, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn };
 

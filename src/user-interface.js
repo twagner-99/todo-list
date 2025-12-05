@@ -11,7 +11,7 @@ const displayProjectsAll = () => {
     removeAllChildNodes(todoListDiv);
     projectHeadingMain.textContent = 'All Items';
     
-    const todoList = getTodoList();     // Do this each time to get current snapshot?
+    const todoList = getTodoList();     // Do this each time to get current snapshot
     for (let project in todoList) {
         const projectDiv = createProjectsAll(project);
         todoListDiv.appendChild(projectDiv);
@@ -105,35 +105,6 @@ const createTodoItemBtns = (function() {
 
 // NEED TO ADD AUTOFOCU. ADD OPTIONAL PARAM AND ADD TO SAVEFORMVALUE BUTTONS? OR CANCEL BUTTONS?
 
-// Unsure of best practice. Should event listerners be added here (in a module) or in index.js?
-// I can change this by querySelectorAll for what purpose I want and add event listeners that way.
-    // THIS FEELS BETTER. DO THIS.
-const addEventListenersToBtns = (btns) => {
-    for (let btn of btns) {
-        if (btn.dataset.purpose === 'closeModal') {
-            btn.addEventListener('click', () => todoItemModal.close());
-        }
-
-        else if (btn.dataset.purpose === 'deleteTodoItem') {
-            // Add code here using deleteTodoItem(uuid)
-            // the todoItemDivs have a dataset.uuid
-        }
-
-        else if (btn.dataset.purpose === 'createTodoItem') {
-            // Add code here using createTodoItem(title, description, dueDate, priority, project)
-            // All params will come from the form the user fills out
-        }
-
-        else {
-            // Add code here using editTodoItem(uuid, property, newValue)
-            // All params will come from the form the user fills out
-        }
-    }
-};
-
-addEventListenersToBtns(newTodoItemBtns);
-addEventListenersToBtns(editTodoItemBtns);
-
 const appendChildren = (parentNode, children) => {
     children.forEach((child) => {
         parentNode.appendChild(child);
@@ -173,8 +144,8 @@ const displayModalEdit = () => {
     todoItemModal.showModal();
 }
 
-// const closeModal = () => {
-//     todoItemModal.close();
+// const closeModal = (modalToClose) => {
+//     modalToClose.close();
 // }
 
 export { displayProjectsAll, displayProjectSingle, displayModalNew, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn };

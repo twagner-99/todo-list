@@ -1,7 +1,6 @@
 const TodoItemCreator = class {
-    constructor(title, description, dueDate, priority) {
+    constructor(title, dueDate, priority) {
         this.title = title;
-        this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
         this.uuid = self.crypto.randomUUID();
@@ -22,12 +21,14 @@ const createProject = (project) => {
     }
 }
 
-const createTodoItem = (title, description, dueDate, priority, project) => {
+const createTodoItem = (title, dueDate, priority, project) => {
     if (!(project in todoList)) {   // If project doesn't exist yet, exit.
         return;
     }
     
-    const todoItem = new TodoItemCreator(title, description, dueDate, priority);
+    // BUG HERE. You can "create" an item when all required fields aren't filled out.
+    // Add something that prevents creating it until all values are input in the form.
+    const todoItem = new TodoItemCreator(title, dueDate, priority);
     todoList[project].push(todoItem);
 
     // Once UI is available, user will only be able to select existing projects

@@ -22,18 +22,26 @@ const createProject = (project) => {
 }
 
 const createTodoItem = (title, dueDate, priority, project) => {
-    if (!(project in todoList)) {   // If project doesn't exist yet, exit.
+    if (requiredFieldsCheck(title, dueDate, priority, project)) {
         return;
     }
     
-    // BUG HERE. You can "create" an item when all required fields aren't filled out.
-    // Add something that prevents creating it until all values are input in the form.
     const todoItem = new TodoItemCreator(title, dueDate, priority);
     todoList[project].push(todoItem);
 
     // Once UI is available, user will only be able to select existing projects
     // from a drop-down so there's no risk of them trying to select one that doesn't exist.
     // If they do want one that doesn't exist, they'll have an option to create it.
+}
+
+const requiredFieldsCheck = (title, dueDate, priority, project) => {
+    if (!(title && dueDate && priority && project)) {
+        return true; // Not sure if this is good. 0 and empty strings are falsy. Do we want users to be able to do that?
+    }
+
+    if (!(project in todoList)) {   // If project doesn't exist yet, exit.
+        return true;
+    }
 }
 
 const getTodoList = () => todoList;

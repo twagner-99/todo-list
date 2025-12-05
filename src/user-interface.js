@@ -61,6 +61,10 @@ const createTodoItemDiv = (todoItem) => {
     return todoItemDiv;
 }
 
+
+// Need to add a modal dialog to enter new project name. Will have option to create or cancel.
+// When project name is entered, its value will be used to createProject() from todo-items.js
+    // and addProjectDropdownOptions() from user-interface.js
 const addProjectBtn = (project) => {
     const projectBtn = createBtn(project, project);
     navBar.appendChild(projectBtn);
@@ -101,6 +105,9 @@ const createTodoItemBtns = (function() {
 
 // NEED TO ADD AUTOFOCU. ADD OPTIONAL PARAM AND ADD TO SAVEFORMVALUE BUTTONS? OR CANCEL BUTTONS?
 
+// Unsure of best practice. Should event listerners be added here (in a module) or in index.js?
+// I can change this by querySelectorAll for what purpose I want and add event listeners that way.
+    // THIS FEELS BETTER. DO THIS.
 const addEventListenersToBtns = (btns) => {
     for (let btn of btns) {
         if (btn.dataset.purpose === 'closeModal') {

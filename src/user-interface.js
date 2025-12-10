@@ -66,7 +66,7 @@ const createTodoItemDiv = (todoItem) => {
 // When project name is entered, its value will be used to createProject() from todo-items.js
     // and addProjectDropdownOptions() from user-interface.js
 const addProjectBtn = (project) => {
-    const projectBtn = createBtn(project, project);
+    const projectBtn = createBtn(project, project, 'button', 'displayProject'); // Add event listeners to these
     navBar.appendChild(projectBtn);
 }
 
@@ -144,7 +144,7 @@ const displayModalEdit = () => {
     todoItemModal.showModal();
 }
 
-export { displayProjectsAll, displayProjectSingle, displayModalNew, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn };
+export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn };
 
 // When user adds new project, auto-load it right after
 // When add is clicked user can select what project

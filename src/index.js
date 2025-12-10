@@ -6,6 +6,7 @@ const newTodoItemBtn = document.querySelector('#new-todo-item-btn');
 const newProjectBtn = document.querySelector('#new-project-btn');
 const allItemsBtn = document.querySelector('#all-items-btn');
 const todoItemModal = document.querySelector('#todo-item-modal');
+const todoItemForm = document.querySelector('#todo-item-form');
 
 const title = document.querySelector('#title');
 const dueDate = document.querySelector('#due-date');
@@ -21,8 +22,14 @@ todoItemModal.addEventListener('click', (e) => {
     }
 
     if (e.target.dataset.purpose === 'createTodoItem') {
+        if (!(todoItemForm.reportValidity())) {
+            return;
+        }
+
         createTodoItem(title.value, dueDate.value, priority.value, project.value);
+        todoItemForm.reset();
         displayProjectsAll();
+        todoItemModal.close();
     }
 
     if (e.target.dataset.purpose === 'editTodoItem') {

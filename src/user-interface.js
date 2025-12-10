@@ -96,14 +96,14 @@ const editTodoItemBtns = [];
 
 const createTodoItemBtns = (function() {
     newTodoItemBtns.push(createBtn('cancelBtn', 'Cancel', 'button', 'closeModal'));
-    newTodoItemBtns.push(createBtn('createTodoItemBtn', 'Create Task', 'submit', 'createTodoItem'));
+    newTodoItemBtns.push(createBtn('createTodoItemBtn', 'Create Task', 'button', 'createTodoItem'));
     
     editTodoItemBtns.push(createBtn('deleteBtn', 'Delete Task', 'button', 'deleteTodoItem'));
     editTodoItemBtns.push(createBtn('discardBtn', 'Discard Changes', 'button', 'closeModal'));
-    editTodoItemBtns.push(createBtn('saveBtn', 'Save Changes', 'submit', 'saveFormValues'));
+    editTodoItemBtns.push(createBtn('saveBtn', 'Save Changes', 'button', 'saveFormValues'));
 })();
 
-// NEED TO ADD AUTOFOCU. ADD OPTIONAL PARAM AND ADD TO SAVEFORMVALUE BUTTONS? OR CANCEL BUTTONS?
+// NEED TO ADD AUTOFOCUS. ADD OPTIONAL PARAM AND ADD TO SAVEFORMVALUE BUTTONS? OR CANCEL BUTTONS?
 
 const appendChildren = (parentNode, children) => {
     children.forEach((child) => {
@@ -143,10 +143,6 @@ const displayModalEdit = () => {
     addProjectDropdownOptions();
     todoItemModal.showModal();
 }
-
-// const closeModal = (modalToClose) => {
-//     modalToClose.close();
-// }
 
 export { displayProjectsAll, displayProjectSingle, displayModalNew, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn };
 

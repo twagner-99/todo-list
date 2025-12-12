@@ -133,14 +133,12 @@ const deleteProjectDropdownOptions = (project) => {     // might end up needing 
 }
 
 const displayModalNew = () => {                            // These could be put in a single fn with an if statement... but then we have to query the e param
-    appendChildren(modalBtnsDiv, newTodoItemBtns); // This way, we just run one when one btn is clicked, and the other when another btn is clicked.
-    addProjectDropdownOptions();                           // Seems better for separation for DOM to do it this way.
+    appendChildren(modalBtnsDiv, newTodoItemBtns); // This way, we just run one when one btn is clicked, and the other when another btn is clicked.                        // Seems better for separation for DOM to do it this way.
     todoItemModal.showModal();
 }
 
 const displayModalEdit = () => {
     appendChildren(modalBtnsDiv, editTodoItemBtns);
-    addProjectDropdownOptions();
     todoItemModal.showModal();
 }
 

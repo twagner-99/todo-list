@@ -74,7 +74,7 @@ createProjectBtn.addEventListener('click', () => { // should I leverage event bu
     
     createProject(newProjectInput.value);
     addProjectBtn(newProjectInput.value);
-    addProjectDropdownOptions();    // BUG - This is adding double for some reason.
+    addProjectDropdownOptions();
     newProjectForm.reset();
     newProjectModal.close();
     // QUESTION! SHOULD ALL THESE BE BLOBBED INTO THEIR OWN FN UNDER USER-INTERFACE

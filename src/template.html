@@ -8,9 +8,9 @@
 <body>
     <div id="sidebar">
         <h1 class="inline-block">Projects </h1>
-        <button id="new-project-btn">+</button>
+        <button id="new-project-btn" data-purpose="showModal">+</button>
         <nav>
-            <button id="all-items-btn">All Items</button>
+            <button id="all-items-btn" data-purpose="displayProjectsAll">All Items</button>
             <!-- All other project btns will be dynamically created with JS -->
         </nav>
     </div>
@@ -72,7 +72,7 @@
             </div>
             <div id="modal-btns-div">
                 <button data-purpose="closeModal" type="button">Cancel</button>
-                <button id="create-project-btn" type="button">Create Project</button>
+                <button id="create-project-btn" data-purpose="createProject" type="button">Create Project</button>
             </div>
         </form>
     </dialog>

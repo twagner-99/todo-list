@@ -66,7 +66,7 @@ const createTodoItemDiv = (todoItem) => {
 // When project name is entered, its value will be used to createProject() from todo-items.js
     // and addProjectDropdownOptions() from user-interface.js
 const addProjectBtn = (project) => {
-    const projectBtn = createBtn(project, project, 'button', 'displayProject'); // Add event listeners to these
+    const projectBtn = createBtn(project, project, 'button', 'displayProjectSingle'); // Add event listeners to these
     navBar.appendChild(projectBtn);
 }
 

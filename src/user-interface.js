@@ -53,20 +53,23 @@ const createProjectSingle = (project) => {
 const createTodoItemDiv = (todoItem) => {
     const todoItemDiv = document.createElement('div');
     const todoItemPara = document.createElement('p');
+    const dueDatePara = document.createElement('p');
+
+    const deleteBtn = createBtn('deleteBtn', 'Delete', 'button', 'deleteTodoItem');
+    const editBtn = createBtn('editBtn', 'Edit', 'button', 'editTodoItem');
 
     todoItemDiv.dataset.uuid = todoItem.uuid;
     todoItemPara.textContent = todoItem.title;
+    dueDatePara.textContent = `Due Date: ${todoItem.dueDate}`;
 
-    todoItemDiv.appendChild(todoItemPara);
+    const childrenToAppend = createArray(todoItemPara, dueDatePara, deleteBtn, editBtn);
+    appendChildren(todoItemDiv, childrenToAppend);
+
     return todoItemDiv;
 }
 
-
-// Need to add a modal dialog to enter new project name. Will have option to create or cancel.
-// When project name is entered, its value will be used to createProject() from todo-items.js
-    // and addProjectDropdownOptions() from user-interface.js
 const addProjectBtn = (project) => {
-    const projectBtn = createBtn(project, project, 'button', 'displayProjectSingle'); // Add event listeners to these
+    const projectBtn = createBtn(project, project, 'button', 'displayProjectSingle');
     navBar.appendChild(projectBtn);
 }
 
@@ -91,16 +94,15 @@ const createBtn = (id, text, type, purpose) => {
     return newBtn;
 }
 
-const newTodoItemBtns = [];
-const editTodoItemBtns = [];
-
 const createTodoItemBtns = (function() {
-    newTodoItemBtns.push(createBtn('cancelBtn', 'Cancel', 'button', 'closeModal'));
-    newTodoItemBtns.push(createBtn('createTodoItemBtn', 'Create Task', 'button', 'createTodoItem'));
-    
-    editTodoItemBtns.push(createBtn('deleteBtn', 'Delete Task', 'button', 'deleteTodoItem'));
-    editTodoItemBtns.push(createBtn('discardBtn', 'Discard Changes', 'button', 'closeModal'));
-    editTodoItemBtns.push(createBtn('saveBtn', 'Save Changes', 'button', 'saveFormValues'));
+    const newTodoItemBtns = createArray(createBtn('cancelBtn', 'Cancel', 'button', 'closeModal'),
+                                        createBtn('createTodoItemBtn', 'Create Task', 'button', 'createTodoItem'));
+
+    const editTodoItemBtns = createArray(createBtn('deleteBtn', 'Delete Task', 'button', 'deleteTodoItem'),
+                                        createBtn('deleteBtn', 'Delete Task', 'button', 'deleteTodoItem'),
+                                        createBtn('saveBtn', 'Save Changes', 'button', 'saveFormValues'));
+
+    return { newTodoItemBtns, editTodoItemBtns };
 })();
 
 // NEED TO ADD AUTOFOCUS. ADD OPTIONAL PARAM AND ADD TO SAVEFORMVALUE BUTTONS? OR CANCEL BUTTONS?
@@ -133,18 +135,17 @@ const deleteProjectDropdownOptions = (project) => {     // might end up needing 
 }
 
 const displayModalNew = () => {                            // These could be put in a single fn with an if statement... but then we have to query the e param
-    appendChildren(modalBtnsDiv, newTodoItemBtns); // This way, we just run one when one btn is clicked, and the other when another btn is clicked.                        // Seems better for separation for DOM to do it this way.
+    appendChildren(modalBtnsDiv, createTodoItemBtns.newTodoItemBtns); // This way, we just run one when one btn is clicked, and the other when another btn is clicked.                        // Seems better for separation for DOM to do it this way.
     todoItemModal.showModal();
 }
 
 const displayModalEdit = () => {
-    appendChildren(modalBtnsDiv, editTodoItemBtns);
+    appendChildren(modalBtnsDiv, createTodoItemBtns.editTodoItemBtns);
     todoItemModal.showModal();
 }
 
-export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn };
+function createArray(...itemsToPush) {
+    return itemsToPush;
+}
 
-// When user adds new project, auto-load it right after
-// When add is clicked user can select what project
-    // But the default will either be deault when in 
-    // All Items or whatever project they're currently in
+export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn };

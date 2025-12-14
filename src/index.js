@@ -1,5 +1,5 @@
 import { createProject, createTodoItem, getTodoItemInfo, editTodoItem, editProjectName, moveTodoItem, deleteTodoItem, deleteProject } from "./todo-items.js";
-import { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn } from "./user-interface.js";
+import { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler } from "./user-interface.js";
 import "./styles.css"
 
 const newTodoItemBtn = document.querySelector('#new-todo-item-btn');
@@ -11,12 +11,16 @@ const allItemsBtn = document.querySelector('#all-items-btn');
 const todoItemModal = document.querySelector('#todo-item-modal');
 const todoItemForm = document.querySelector('#todo-item-form');
 const sidebarDiv = document.querySelector('#sidebar');
+const contentDiv = document.querySelector('#content');
+const deleteTodoItemModal = document.querySelector('#delete-todo-item-modal');
 
 const title = document.querySelector('#title');
 const dueDate = document.querySelector('#due-date');
 const priority = document.querySelector('#priority');
 const project = document.querySelector('#project-dropdown');
 const newProjectInput = document.querySelector('#new-project-input');
+
+// MIGHT WANT TO QUERY SELECT ALL BASED ON TYPE AND THEN ADD EVENT LISTENERS THAT WAY.
 
 // Add event listeners to buttons within modals. Only for buttons used in multiple places.
 const allModals = document.querySelectorAll('dialog');
@@ -29,7 +33,7 @@ for (let currentModal of allModals) {
         }
 
         if (e.target.dataset.purpose === 'createTodoItem') {
-            if (!(currentForm.reportValidity())) { // This needs to find todoItemForm equivalent
+            if (!(currentForm.reportValidity())) {
                 return;
             }
 
@@ -44,9 +48,14 @@ for (let currentModal of allModals) {
             // All params will come from the form the user fills out
         }
 
+        if (e.target.dataset.purpose === 'showDeleteTodoItemModal') {
+
+        }
+
         if (e.target.dataset.purpose === 'deleteTodoItem') {
-            // Add code here using deleteTodoItem(uuid)
-            // the todoItemDivs have a dataset.uuid
+            deleteTodoItem(uuidHandler.getCurrentUuid());
+            currentModal.close();
+            displayProjectsAll();   // Need to find a way to keep on the users last view, whether it was all projects or a single project
         }
     })
 }
@@ -61,12 +70,27 @@ sidebarDiv.addEventListener('click', (e) => {
         displayProjectSingle(e.target.id);
     }
 
-    if (e.target.dataset.purpose === 'showModal') {
+    if (e.target.dataset.purpose === 'showNewProjectModal') {
         newProjectModal.showModal();
     }
 })
 
-newTodoItemBtn.addEventListener('click', displayModalNew);
+contentDiv.addEventListener('click', (e) => {
+    if (e.target.dataset.purpose === 'showEditTodoItemModal') {
+        displayModalEdit();
+    }
+
+    if (e.target.dataset.purpose === 'showNewTodoItemModal') {
+        displayModalNew();
+    }
+
+    if (e.target.dataset.purpose === 'showDeleteTodoItemModal') {
+        uuidHandler.setCurrentUuid(e);
+        deleteTodoItemModal.showModal();
+    }
+})
+
+
 createProjectBtn.addEventListener('click', () => { // should I leverage event bubbling here or is it not needed b/c these buttons aren't dynamically created?
     if (!(newProjectForm.reportValidity())) {   // should prob be in it's own fn, like form check. and then the form it's checking is a parameter
         return;

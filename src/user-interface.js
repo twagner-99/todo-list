@@ -55,8 +55,8 @@ const createTodoItemDiv = (todoItem) => {
     const todoItemPara = document.createElement('p');
     const dueDatePara = document.createElement('p');
 
-    const deleteBtn = createBtn('deleteBtn', 'Delete', 'button', 'deleteTodoItem');
-    const editBtn = createBtn('editBtn', 'Edit', 'button', 'editTodoItem');
+    const deleteBtn = createBtn('deleteBtn', 'Delete', 'button', 'showDeleteTodoItemModal');
+    const editBtn = createBtn('editBtn', 'Edit', 'button', 'showEditTodoItemModal');
 
     todoItemDiv.dataset.uuid = todoItem.uuid;
     todoItemPara.textContent = todoItem.title;
@@ -144,8 +144,20 @@ const displayModalEdit = () => {
     todoItemModal.showModal();
 }
 
-function createArray(...itemsToPush) {
+function createArray(...itemsToPush) {  // Fn declaration so it can be used anywhere.
     return itemsToPush;
 }
 
-export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn };
+const uuidHandler = (function() {
+    let uuid;
+    
+    const setCurrentUuid = (e) => {
+        uuid = e.target.parentElement.dataset.uuid;
+    }
+    
+    const getCurrentUuid = () => uuid;
+    
+    return { setCurrentUuid, getCurrentUuid };
+})();
+
+export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler };

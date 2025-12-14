@@ -17,7 +17,9 @@ const createProject = (project) => {
     }
 
     else {
-        console.log('Project name already exists. Please enter a new name');    // Will eventually be returned instead of console.logged
+        console.log('Project name already exists. Please enter a new name');
+        // Will eventually be returned instead of console.logged
+        // Good candidate for custom popup messages.
     }
 }
 
@@ -28,10 +30,6 @@ const createTodoItem = (title, dueDate, priority, project) => {
     
     const todoItem = new TodoItemCreator(title, dueDate, priority);
     todoList[project].push(todoItem);
-
-    // Once UI is available, user will only be able to select existing projects
-    // from a drop-down so there's no risk of them trying to select one that doesn't exist.
-    // If they do want one that doesn't exist, they'll have an option to create it.
 }
 
 const getTodoList = () => todoList;

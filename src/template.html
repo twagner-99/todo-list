@@ -8,7 +8,7 @@
 <body>
     <div id="sidebar">
         <h1 class="inline-block">Projects </h1>
-        <button id="new-project-btn" data-purpose="showModal">+</button>
+        <button id="new-project-btn" data-purpose="showNewProjectModal">+</button>
         <nav>
             <button id="all-items-btn" data-purpose="displayProjectsAll">All Items</button>
             <!-- All other project btns will be dynamically created with JS -->
@@ -17,9 +17,9 @@
 
     <div id="content">
         <h1 id="project-heading" class="inline-block">All Items</h1> <!-- Header text dynamically updated with JS -->
-        <button id="edit-project-btn">...</button>
+        <!-- <button id="edit-project-btn">...</button> -->
         <div id="todo-list"></div>  <!-- All todo list content will be dynamically created with JS -->
-        <button id="new-todo-item-btn">+ Add</button>
+        <button id="new-todo-item-btn" data-purpose="showNewTodoItemModal">+ Add</button>
     </div>
 
     <dialog id="todo-item-modal">
@@ -74,6 +74,22 @@
                 <button data-purpose="closeModal" type="button">Cancel</button>
                 <button id="create-project-btn" data-purpose="createProject" type="button">Create Project</button>
             </div>
+        </form>
+    </dialog>
+
+    <dialog id="delete-todo-item-modal">
+        <form id="delete-todo-item-form">
+            <legend>Delete Task?</legend>
+            <button data-purpose="closeModal" type="button">Cancel</button>
+            <button data-purpose="deleteTodoItem" type="button">Confirm</button>
+        </form>
+    </dialog>
+
+    <dialog id="delete-project-modal">
+        <form id="delete-project-form">
+            <legend>Delete Project and All Associated Tasks?</legend>
+            <button data-purpose="closeModal" type="button">Cancel</button>
+            <button data-purpose="deleteProject" type="button">Confirm</button>
         </form>
     </dialog>
 </body>

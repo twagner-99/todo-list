@@ -99,7 +99,6 @@ const createTodoItemBtns = (function() {
                                         createBtn('createTodoItemBtn', 'Create Task', 'button', 'createTodoItem'));
 
     const editTodoItemBtns = createArray(createBtn('deleteBtn', 'Delete Task', 'button', 'deleteTodoItem'),
-                                        createBtn('deleteBtn', 'Delete Task', 'button', 'deleteTodoItem'),
                                         createBtn('saveBtn', 'Save Changes', 'button', 'saveFormValues'));
 
     return { newTodoItemBtns, editTodoItemBtns };
@@ -135,11 +134,13 @@ const deleteProjectDropdownOptions = (project) => {     // might end up needing 
 }
 
 const displayModalNew = () => {                            // These could be put in a single fn with an if statement... but then we have to query the e param
+    removeAllChildNodes(modalBtnsDiv);
     appendChildren(modalBtnsDiv, createTodoItemBtns.newTodoItemBtns); // This way, we just run one when one btn is clicked, and the other when another btn is clicked.                        // Seems better for separation for DOM to do it this way.
     todoItemModal.showModal();
 }
 
 const displayModalEdit = () => {
+    removeAllChildNodes(modalBtnsDiv);
     appendChildren(modalBtnsDiv, createTodoItemBtns.editTodoItemBtns);
     todoItemModal.showModal();
 }
@@ -160,4 +161,4 @@ const uuidHandler = (function() {
     return { setCurrentUuid, getCurrentUuid };
 })();
 
-export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler };
+export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit };

@@ -49,7 +49,8 @@ for (let currentModal of allModals) {
         }
 
         if (e.target.dataset.purpose === 'showDeleteTodoItemModal') {
-
+            currentModal.close();
+            deleteTodoItemModal.showModal();
         }
 
         if (e.target.dataset.purpose === 'deleteTodoItem') {
@@ -77,6 +78,7 @@ sidebarDiv.addEventListener('click', (e) => {
 
 contentDiv.addEventListener('click', (e) => {
     if (e.target.dataset.purpose === 'showEditTodoItemModal') {
+        uuidHandler.setCurrentUuid(e);
         displayModalEdit();
     }
 

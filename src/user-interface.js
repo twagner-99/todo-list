@@ -98,7 +98,7 @@ const createTodoItemBtns = (function() {
     const newTodoItemBtns = createArray(createBtn('cancelBtn', 'Cancel', 'button', 'closeModal'),
                                         createBtn('createTodoItemBtn', 'Create Task', 'button', 'createTodoItem'));
 
-    const editTodoItemBtns = createArray(createBtn('deleteBtn', 'Delete Task', 'button', 'deleteTodoItem'),
+    const editTodoItemBtns = createArray(createBtn('deleteBtn', 'Delete Task', 'button', 'showDeleteTodoItemModal'),
                                         createBtn('saveBtn', 'Save Changes', 'button', 'saveFormValues'));
 
     return { newTodoItemBtns, editTodoItemBtns };

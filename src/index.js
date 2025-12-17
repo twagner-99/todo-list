@@ -1,5 +1,5 @@
 import { createProject, createTodoItem, getTodoItemInfo, editTodoItem, editProjectName, moveTodoItem, deleteTodoItem, deleteProject } from "./todo-items.js";
-import { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit } from "./user-interface.js";
+import { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler } from "./user-interface.js";
 import "./styles.css"
 
 const newTodoItemBtn = document.querySelector('#new-todo-item-btn');
@@ -18,6 +18,15 @@ const title = document.querySelector('#title');
 const dueDate = document.querySelector('#due-date');
 const priority = document.querySelector('#priority');
 const project = document.querySelector('#project-dropdown');
+
+// const todoItemFormInputs = document.querySelectorAll('#todo-item-form input, #todo-item-form select');
+
+const todoItemFormInputs = {title: document.querySelector('#title'),
+                            dueDate: document.querySelector('#due-date'),
+                            priority: document.querySelector('#priority'),
+                            project: document.querySelector('#project-dropdown'),
+                            };
+
 const newProjectInput = document.querySelector('#new-project-input');
 
 // MIGHT WANT TO QUERY SELECT ALL BASED ON TYPE AND THEN ADD EVENT LISTENERS THAT WAY.
@@ -29,6 +38,7 @@ for (let currentModal of allModals) {
 
     currentModal.addEventListener('click', (e) => {
         if (e.target.dataset.purpose === 'closeModal') {
+            currentForm.reset();
             currentModal.close();
         }
 
@@ -44,8 +54,18 @@ for (let currentModal of allModals) {
         }
 
         if (e.target.dataset.purpose === 'editTodoItem') {
-            // Add code here using editTodoItem(uuid, property, newValue)
-            // All params will come from the form the user fills out
+            let originalTodoItem = currentTodoItemHandler.getCurrentTodoItem().todoItem;
+
+            for (let formInput in todoItemFormInputs) {
+                if (formInput in originalTodoItem) {
+                    if (todoItemFormInputs[formInput].value !== originalTodoItem[formInput])
+                    editTodoItem(uuidHandler.getCurrentUuid(), formInput, todoItemFormInputs[formInput].value);
+                }            
+            }
+
+            currentForm.reset();
+            displayProjectsAll();
+            currentModal.close();
         }
 
         if (e.target.dataset.purpose === 'showDeleteTodoItemModal') {
@@ -79,6 +99,16 @@ sidebarDiv.addEventListener('click', (e) => {
 contentDiv.addEventListener('click', (e) => {
     if (e.target.dataset.purpose === 'showEditTodoItemModal') {
         uuidHandler.setCurrentUuid(e);
+
+        currentTodoItemHandler.setCurrentTodoItem(uuidHandler.getCurrentUuid());
+        
+        let currentTodoItem = currentTodoItemHandler.getCurrentTodoItem().todoItem;
+        for (let formInput in todoItemFormInputs) {
+            if (formInput in currentTodoItem) {
+                todoItemFormInputs[formInput].value = currentTodoItem[formInput];
+            }            
+        }
+
         displayModalEdit();
     }
 
@@ -93,7 +123,7 @@ contentDiv.addEventListener('click', (e) => {
 })
 
 
-createProjectBtn.addEventListener('click', () => { // should I leverage event bubbling here or is it not needed b/c these buttons aren't dynamically created?
+createProjectBtn.addEventListener('click', () => { // Should prob get moved under modal section to leverage event bubbling
     if (!(newProjectForm.reportValidity())) {   // should prob be in it's own fn, like form check. and then the form it's checking is a parameter
         return;
     }

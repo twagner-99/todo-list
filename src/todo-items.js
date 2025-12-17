@@ -1,8 +1,9 @@
 const TodoItemCreator = class {
-    constructor(title, dueDate, priority) {
+    constructor(title, dueDate, priority, project) {
         this.title = title;
         this.dueDate = dueDate;
         this.priority = priority;
+        this.project = project;
         this.uuid = self.crypto.randomUUID();
         // Probably will need to add property for completetionStatus = true or false
         // that will toggle when checkboxes are checked 
@@ -28,7 +29,7 @@ const createTodoItem = (title, dueDate, priority, project) => {
         return;
     }
     
-    const todoItem = new TodoItemCreator(title, dueDate, priority);
+    const todoItem = new TodoItemCreator(title, dueDate, priority, project);
     todoList[project].push(todoItem);
 }
 
@@ -48,7 +49,19 @@ const getTodoItemInfo = (uuid) => {
     }
 }
 
+const moveTodoItem = (uuid, project) => {
+    const todoItemToMove = getTodoItemInfo(uuid).todoItem;
+    deleteTodoItem(uuid);
+
+    todoItemToMove.todoItem.project = project;
+    todoList[project].push(todoItemToMove);
+}
+
 const editTodoItem = (uuid, property, newValue) => {
+    if (property === 'project') {
+        moveTodoItem(uuid, property);
+    }
+    
     const todoItemToEdit = getTodoItemInfo(uuid).todoItem;
     todoItemToEdit[property] = newValue;
 }
@@ -61,13 +74,6 @@ const editProjectName = (oldProjectName, newProjectName) => {
 
     todoList[newProjectName] = todoList[oldProjectName];
     delete todoList[oldProjectName];
-}
-
-const moveTodoItem = (uuid, project) => {
-    const todoItemToMove = getTodoItemInfo(uuid).todoItem;
-    deleteTodoItem(uuid);
-
-    todoList[project].push(todoItemToMove);
 }
 
 const deleteTodoItem = (uuid) => {

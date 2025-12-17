@@ -1,4 +1,4 @@
-import { getTodoList, createTodoItem, deleteTodoItem, editTodoItem } from "./todo-items";
+import { getTodoList, createTodoItem, deleteTodoItem, editTodoItem, getTodoItemInfo } from "./todo-items";
 
 const todoListDiv = document.querySelector('#todo-list');
 const projectHeadingMain = document.querySelector('#project-heading');
@@ -98,8 +98,9 @@ const createTodoItemBtns = (function() {
     const newTodoItemBtns = createArray(createBtn('cancelBtn', 'Cancel', 'button', 'closeModal'),
                                         createBtn('createTodoItemBtn', 'Create Task', 'button', 'createTodoItem'));
 
-    const editTodoItemBtns = createArray(createBtn('deleteBtn', 'Delete Task', 'button', 'showDeleteTodoItemModal'),
-                                        createBtn('saveBtn', 'Save Changes', 'button', 'saveFormValues'));
+    const editTodoItemBtns = createArray(createBtn('cancelBtn', 'Cancel', 'button', 'closeModal'),
+                                        createBtn('deleteBtn', 'Delete Task', 'button', 'showDeleteTodoItemModal'),
+                                        createBtn('saveBtn', 'Save Changes', 'button', 'editTodoItem'));
 
     return { newTodoItemBtns, editTodoItemBtns };
 })();
@@ -145,7 +146,7 @@ const displayModalEdit = () => {
     todoItemModal.showModal();
 }
 
-function createArray(...itemsToPush) {  // Fn declaration so it can be used anywhere.
+function createArray(...itemsToPush) {  // Fn declaration so it can be used anywhere. DON'T NEED THIS?
     return itemsToPush;
 }
 
@@ -161,4 +162,17 @@ const uuidHandler = (function() {
     return { setCurrentUuid, getCurrentUuid };
 })();
 
-export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit };
+const currentTodoItemHandler = (function() {
+    let currentTodoItem;
+
+    const setCurrentTodoItem = (uuid) => {
+        currentTodoItem = getTodoItemInfo(uuid);
+    }
+
+    const getCurrentTodoItem = () => currentTodoItem;
+
+    return { setCurrentTodoItem, getCurrentTodoItem };
+
+})();
+
+export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler };

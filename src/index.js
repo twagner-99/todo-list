@@ -1,5 +1,5 @@
 import { createProject, createTodoItem, getTodoItemInfo, editTodoItem, editProjectName, moveTodoItem, deleteTodoItem, deleteProject } from "./todo-items.js";
-import { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler } from "./user-interface.js";
+import { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler, currentProjectHandler } from "./user-interface.js";
 import "./styles.css"
 
 const newTodoItemBtn = document.querySelector('#new-todo-item-btn');
@@ -13,6 +13,9 @@ const todoItemForm = document.querySelector('#todo-item-form');
 const sidebarDiv = document.querySelector('#sidebar');
 const contentDiv = document.querySelector('#content');
 const deleteTodoItemModal = document.querySelector('#delete-todo-item-modal');
+const updateProjectModal = document.querySelector('#update-project-modal');
+const deleteProjectModal = document.querySelector('#delete-project-modal');
+const editProjectNameModal = document.querySelector('#edit-project-name-modal');
 
 const title = document.querySelector('#title');
 const dueDate = document.querySelector('#due-date');
@@ -78,6 +81,26 @@ for (let currentModal of allModals) {
             currentModal.close();
             displayProjectsAll();   // Need to find a way to keep on the users last view, whether it was all projects or a single project
         }
+
+        if (e.target.dataset.purpose === 'showDeleteProjectModal') {
+            currentModal.close();
+            deleteProjectModal.showModal();
+        }
+
+        if (e.target.dataset.purpose === 'showEditProjectNameModal') {
+            currentModal.close();
+            editProjectNameModal.showModal();
+        }
+
+        if (e.target.dataset.purpose === 'deleteProject') {
+            deleteProject(currentProjectHandler.getCurrentProject());
+            currentModal.close();
+            displayProjectsAll();
+        }
+
+        if (e.target.dataset.purpose === 'editProjectName') {
+            
+        }
     })
 }
 
@@ -120,6 +143,11 @@ contentDiv.addEventListener('click', (e) => {
         uuidHandler.setCurrentUuid(e);
         deleteTodoItemModal.showModal();
     }
+
+    if (e.target.dataset.purpose === 'showUpdateProjectModal') {
+        currentProjectHandler.setCurrentProject(e);
+        updateProjectModal.showModal();
+    }
 })
 
 
@@ -128,18 +156,12 @@ createProjectBtn.addEventListener('click', () => { // Should prob get moved unde
         return;
     }
     
-    if (createProject(newProjectInput.value)) {
+    if (createProject(newProjectInput.value)) { // If project doesn't exist, it'll create it and continue on. If it does exist, it'll alert.
         addProjectBtn(newProjectInput.value);
         addProjectDropdownOptions(newProjectInput.value);
         newProjectForm.reset();
         newProjectModal.close();
     }
-
-    // createProject(newProjectInput.value);
-    // addProjectBtn(newProjectInput.value);
-    // addProjectDropdownOptions();
-    // newProjectForm.reset();
-    // newProjectModal.close();
     // QUESTION! SHOULD ALL THESE BE BLOBBED INTO THEIR OWN FN UNDER USER-INTERFACE
     // AND THEN CALL THAT SINGLE FN HERE? PROBABLY
 })

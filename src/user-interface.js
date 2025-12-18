@@ -9,7 +9,6 @@ const navBar = document.querySelector('nav');
 
 const displayProjectsAll = () => {
     removeAllChildNodes(todoListDiv);
-    projectHeadingMain.textContent = 'All Items';
     
     const todoList = getTodoList();     // Do this each time to get current snapshot
     for (let project in todoList) {
@@ -20,18 +19,31 @@ const displayProjectsAll = () => {
 
 const displayProjectSingle = (project) => {
     removeAllChildNodes(todoListDiv);
-    projectHeadingMain.textContent = project;
+
+    const projectMainHeader = document.createElement('h1'); // add ... for delete and rename project
+    projectMainHeader.textContent = project;
+    
     const projectDiv = createProjectSingle(project);
+    projectDiv.prepend(projectMainHeader);
+    projectDiv.appendChild(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
     todoListDiv.appendChild(projectDiv);
 }
 
 const createProjectsAll = (project) => {
     const projectDiv = createProjectSingle(project);
 
-    if (!(project === 'default')) {
-        const projectSubheader = document.createElement('h2');
+    if (project === 'default') {
+        const projectMainHeader = document.createElement('h1'); // add ... for delete and rename project
+        projectMainHeader.textContent = 'All Items';
+        projectDiv.prepend(projectMainHeader);
+        projectDiv.appendChild(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
+    }
+
+    else {
+        const projectSubheader = document.createElement('h2'); // add ... for delete and rename project
         projectSubheader.textContent = project;
         projectDiv.prepend(projectSubheader);
+        projectDiv.appendChild(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
     }
 
     return projectDiv;
@@ -94,7 +106,7 @@ const createBtn = (id, text, type, purpose) => {
     return newBtn;
 }
 
-const createTodoItemBtns = (function() {
+const createTodoItemBtns = (function() { // why the hell did i use a fn to create an array... just create it
     const newTodoItemBtns = createArray(createBtn('cancelBtn', 'Cancel', 'button', 'closeModal'),
                                         createBtn('createTodoItemBtn', 'Create Task', 'button', 'createTodoItem'));
 
@@ -192,4 +204,16 @@ const currentTodoItemHandler = (function() {
 
 })();
 
-export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler };
+const currentProjectHandler = (function() {
+    let currentProject;
+
+    const setCurrentProject = (e) => {
+        currentProject = e.target.parentElement.id;
+    }
+
+    const getCurrentProject = () => currentProject;
+
+    return { setCurrentProject, getCurrentProject };
+})();
+
+export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler, currentProjectHandler };

@@ -19,7 +19,7 @@ const createProject = (project) => {
     }
 
     else {
-        alert('Project name already exists. Please enter a new name');
+        alert('Project name already exists. Please enter a new name.');
         return false;
     }
 }
@@ -74,6 +74,8 @@ const editProjectName = (oldProjectName, newProjectName) => {
 
     todoList[newProjectName] = todoList[oldProjectName];
     delete todoList[oldProjectName];
+
+    // Need to update any items within to have newprojectname
 }
 
 const deleteTodoItem = (uuid) => {

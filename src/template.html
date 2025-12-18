@@ -16,9 +16,12 @@
     </div>
 
     <div id="content">
-        <h1 id="project-heading" class="inline-block">All Items</h1> <!-- Header text dynamically updated with JS -->
-        <!-- <button id="edit-project-btn">...</button> -->
-        <div id="todo-list"></div>  <!-- All todo list content will be dynamically created with JS -->
+        <div id="todo-list">
+            <div id="default">
+                <h1 id="project-heading" class="inline-block">All Items</h1>
+            </div>
+            <!-- Additional project content will be dynamically created with JS -->
+        </div>  
         <button id="new-todo-item-btn" data-purpose="showNewTodoItemModal">+ Add</button>
     </div>
 
@@ -85,11 +88,34 @@
         </form>
     </dialog>
 
+    <dialog id="update-project-modal">
+        <form id="update-project-form">
+            <legend>What would you like to do?</legend>
+            <button data-purpose="closeModal" type="button">Cancel</button>
+            <button data-purpose="showDeleteProjectModal" type="button">Delete Project</button>
+            <button data-purpose="showEditProjectNameModal" type="button">Edit Project Name</button>
+        </form>
+    </dialog>
+    
     <dialog id="delete-project-modal">
         <form id="delete-project-form">
             <legend>Delete Project and All Associated Tasks?</legend>
             <button data-purpose="closeModal" type="button">Cancel</button>
             <button data-purpose="deleteProject" type="button">Confirm</button>
+        </form>
+    </dialog>
+
+    <dialog id="edit-project-name-modal">
+        <form id="edit-project-name-form">
+            <legend>Edit Project Name</legend>
+            <div>
+                <label for="edit-project-name">Enter New Project Name:</label>
+                <input type="text" id="edit-project-name-input" required>
+            </div>
+            <div>
+                <button data-purpose="closeModal" type="button">Cancel</button>
+                <button id="edit-project-name-btn" data-purpose="editProjectName" type="button">Save</button>
+            </div>
         </form>
     </dialog>
 </body>

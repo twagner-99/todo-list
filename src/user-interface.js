@@ -113,16 +113,33 @@ const appendChildren = (parentNode, children) => {
     });
 }
 
-const addProjectDropdownOptions = () => {
-    const todoList = getTodoList();
-    for (let project in todoList) {
-        if (project !== 'default') {    // No if project === default return statment b/c default is always there.
-            const projectOption = document.createElement('option');
-            projectOption.value = project;
-            projectOption.textContent = project;
-            projectDropdown.appendChild(projectOption);
+const addProjectDropdownOptions = (project) => {
+    // if a child with value of project exists already, return
+
+    const projectDropdownOptions = document.querySelectorAll('#project-dropdown > option');
+
+    for (let option of projectDropdownOptions) {
+        if ([option].value === project) {
+            return;
         }
     }
+    
+    if (project !== 'default') {    // No if project === default return statment b/c default is always there.
+        const projectOption = document.createElement('option');
+        projectOption.value = project;
+        projectOption.textContent = project;
+        projectDropdown.appendChild(projectOption);
+    }
+
+    // const todoList = getTodoList();
+    // for (let project in todoList) {
+    //     if (project !== 'default') {    // No if project === default return statment b/c default is always there.
+    //         const projectOption = document.createElement('option');
+    //         projectOption.value = project;
+    //         projectOption.textContent = project;
+    //         projectDropdown.appendChild(projectOption);
+    //     }
+    // }
 }
 
 const deleteProjectDropdownOptions = (project) => {     // might end up needing to be uuid from whatever we click. then project can be looked up.

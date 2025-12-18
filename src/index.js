@@ -128,11 +128,18 @@ createProjectBtn.addEventListener('click', () => { // Should prob get moved unde
         return;
     }
     
-    createProject(newProjectInput.value);
-    addProjectBtn(newProjectInput.value);
-    addProjectDropdownOptions();
-    newProjectForm.reset();
-    newProjectModal.close();
+    if (createProject(newProjectInput.value)) {
+        addProjectBtn(newProjectInput.value);
+        addProjectDropdownOptions(newProjectInput.value);
+        newProjectForm.reset();
+        newProjectModal.close();
+    }
+
+    // createProject(newProjectInput.value);
+    // addProjectBtn(newProjectInput.value);
+    // addProjectDropdownOptions();
+    // newProjectForm.reset();
+    // newProjectModal.close();
     // QUESTION! SHOULD ALL THESE BE BLOBBED INTO THEIR OWN FN UNDER USER-INTERFACE
     // AND THEN CALL THAT SINGLE FN HERE? PROBABLY
 })

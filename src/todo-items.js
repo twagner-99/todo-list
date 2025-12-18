@@ -15,12 +15,12 @@ const todoList = {default: [],};
 const createProject = (project) => {
     if (!(project in todoList)) {   // If project doesn't exist yet, create it.
         todoList[project] = [];
+        return true;
     }
 
     else {
-        console.log('Project name already exists. Please enter a new name');
-        // Will eventually be returned instead of console.logged
-        // Good candidate for custom popup messages.
+        alert('Project name already exists. Please enter a new name');
+        return false;
     }
 }
 
@@ -53,13 +53,13 @@ const moveTodoItem = (uuid, project) => {
     const todoItemToMove = getTodoItemInfo(uuid).todoItem;
     deleteTodoItem(uuid);
 
-    todoItemToMove.todoItem.project = project;
+    todoItemToMove.project = project;
     todoList[project].push(todoItemToMove);
 }
 
 const editTodoItem = (uuid, property, newValue) => {
     if (property === 'project') {
-        moveTodoItem(uuid, property);
+        moveTodoItem(uuid, newValue);
     }
     
     const todoItemToEdit = getTodoItemInfo(uuid).todoItem;

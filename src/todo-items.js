@@ -68,14 +68,16 @@ const editTodoItem = (uuid, property, newValue) => {
 
 const editProjectName = (oldProjectName, newProjectName) => {
     if (newProjectName in todoList) {
-        console.log('Project name already exists. Cannot rename.');     // Will eventually be returned instead of console.logged
+        alert('Project name already exists. Cannot rename.');
         return;
     }
 
     todoList[newProjectName] = todoList[oldProjectName];
-    delete todoList[oldProjectName];
+    for (let todoItem of todoList[newProjectName]) {
+        todoItem.project = newProjectName;
+    }
 
-    // Need to update any items within to have newprojectname
+    delete todoList[oldProjectName];
 }
 
 const deleteTodoItem = (uuid) => {

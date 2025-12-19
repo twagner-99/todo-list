@@ -86,8 +86,14 @@ const addProjectBtn = (project) => {
 }
 
 const deleteProjectBtn = (project) => {
-    const projectBtn = document.querySelector(`button[id=${project}]`);
+    const projectBtn = document.querySelector(`button[id="${project}"]`);
     navBar.removeChild(projectBtn);
+}
+
+const editProjectBtn = (oldProjectName, newProjectName) => {
+    const projectBtn = document.querySelector(`button[id="${oldProjectName}"]`);
+    projectBtn.id = newProjectName;
+    projectBtn.textContent = newProjectName;
 }
 
 const removeAllChildNodes = (parentNode) => {
@@ -126,10 +132,9 @@ const appendChildren = (parentNode, children) => {
 }
 
 const addProjectDropdownOptions = (project) => {
-    // if a child with value of project exists already, return
-
     const projectDropdownOptions = document.querySelectorAll('#project-dropdown > option');
-
+    
+    // if a child with value of project exists already, return
     for (let option of projectDropdownOptions) {
         if ([option].value === project) {
             return;
@@ -142,25 +147,24 @@ const addProjectDropdownOptions = (project) => {
         projectOption.textContent = project;
         projectDropdown.appendChild(projectOption);
     }
-
-    // const todoList = getTodoList();
-    // for (let project in todoList) {
-    //     if (project !== 'default') {    // No if project === default return statment b/c default is always there.
-    //         const projectOption = document.createElement('option');
-    //         projectOption.value = project;
-    //         projectOption.textContent = project;
-    //         projectDropdown.appendChild(projectOption);
-    //     }
-    // }
 }
 
-const deleteProjectDropdownOptions = (project) => {     // might end up needing to be uuid from whatever we click. then project can be looked up.
-    if (project === 'default') {      // Not allowed to get rid of default
+const deleteProjectDropdownOptions = (project) => {
+    if (project === 'default') {                        // Not allowed to get rid of default
         return;
     }
 
     const projectOption = document.querySelector(`[value="${project}"]`);
     projectDropdown.removeChild(projectOption);
+}
+
+const editProjectDropdownOption = (oldOptionName, newOptionName) => {
+    if (oldOptionName === 'default' || newOptionName === 'default') {     // Not allowed to change default or rename something as default.
+        return;
+    }
+
+    const projectOption = document.querySelector(`[value="${oldOptionName}"]`);
+    projectOption.value = newOptionName;
 }
 
 const displayModalNew = () => {                            // These could be put in a single fn with an if statement... but then we have to query the e param
@@ -216,4 +220,4 @@ const currentProjectHandler = (function() {
     return { setCurrentProject, getCurrentProject };
 })();
 
-export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler, currentProjectHandler };
+export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler, currentProjectHandler, editProjectDropdownOption, editProjectBtn };

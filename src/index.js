@@ -1,5 +1,5 @@
 import { createProject, createTodoItem, getTodoItemInfo, editTodoItem, editProjectName, moveTodoItem, deleteTodoItem, deleteProject } from "./todo-items.js";
-import { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler, currentProjectHandler } from "./user-interface.js";
+import { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler, currentProjectHandler, editProjectDropdownOption, editProjectBtn } from "./user-interface.js";
 import "./styles.css"
 
 const newTodoItemBtn = document.querySelector('#new-todo-item-btn');
@@ -16,6 +16,7 @@ const deleteTodoItemModal = document.querySelector('#delete-todo-item-modal');
 const updateProjectModal = document.querySelector('#update-project-modal');
 const deleteProjectModal = document.querySelector('#delete-project-modal');
 const editProjectNameModal = document.querySelector('#edit-project-name-modal');
+const editProjectNameInput = document.querySelector('#edit-project-name-input');
 
 const title = document.querySelector('#title');
 const dueDate = document.querySelector('#due-date');
@@ -93,13 +94,23 @@ for (let currentModal of allModals) {
         }
 
         if (e.target.dataset.purpose === 'deleteProject') {
-            deleteProject(currentProjectHandler.getCurrentProject());
+            let project = currentProjectHandler.getCurrentProject();
+            deleteProject(project);
+            deleteProjectDropdownOptions(project);
+            deleteProjectBtn(project);
             currentModal.close();
             displayProjectsAll();
         }
 
         if (e.target.dataset.purpose === 'editProjectName') {
-            
+            let oldProjectName = currentProjectHandler.getCurrentProject();
+            let newProjectName = editProjectNameInput.value
+
+            editProjectName(oldProjectName, newProjectName);
+            editProjectDropdownOption(oldProjectName, newProjectName);
+            editProjectBtn(oldProjectName, newProjectName);
+            currentModal.close();
+            displayProjectsAll(); // Need to find a way to keep on the users last view, whether it was all projects or a single project
         }
     })
 }

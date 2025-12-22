@@ -20,7 +20,7 @@ const displayProjectsAll = () => {
 const displayProjectSingle = (project) => {
     removeAllChildNodes(todoListDiv);
 
-    const projectMainHeader = document.createElement('h1'); // add ... for delete and rename project
+    const projectMainHeader = document.createElement('h1');
     projectMainHeader.textContent = project;
     
     const projectDiv = createProjectSingle(project);
@@ -33,14 +33,13 @@ const createProjectsAll = (project) => {
     const projectDiv = createProjectSingle(project);
 
     if (project === 'default') {
-        const projectMainHeader = document.createElement('h1'); // add ... for delete and rename project
+        const projectMainHeader = document.createElement('h1');
         projectMainHeader.textContent = 'All Items';
-        // projectDiv.prepend(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
         projectDiv.prepend(projectMainHeader);
     }
 
     else {
-        const projectSubheader = document.createElement('h2'); // add ... for delete and rename project
+        const projectSubheader = document.createElement('h2');
         projectSubheader.textContent = project;
         projectDiv.prepend(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
         projectDiv.prepend(projectSubheader);
@@ -74,7 +73,7 @@ const createTodoItemDiv = (todoItem) => {
     todoItemPara.textContent = todoItem.title;
     dueDatePara.textContent = `Due Date: ${todoItem.dueDate}`;
 
-    const childrenToAppend = createArray(todoItemPara, dueDatePara, deleteBtn, editBtn);
+    const childrenToAppend = [todoItemPara, dueDatePara, deleteBtn, editBtn];
     appendChildren(todoItemDiv, childrenToAppend);
 
     return todoItemDiv;
@@ -112,13 +111,13 @@ const createBtn = (id, text, type, purpose) => {
     return newBtn;
 }
 
-const createTodoItemBtns = (function() { // why the hell did i use a fn to create an array... just create it
-    const newTodoItemBtns = createArray(createBtn('cancelBtn', 'Cancel', 'button', 'closeModal'),
-                                        createBtn('createTodoItemBtn', 'Create Task', 'button', 'createTodoItem'));
+const createTodoItemBtns = (function() {
+    const newTodoItemBtns = [createBtn('cancelBtn', 'Cancel', 'button', 'closeModal'),
+                             createBtn('createTodoItemBtn', 'Create Task', 'button', 'createTodoItem')];
 
-    const editTodoItemBtns = createArray(createBtn('cancelBtn', 'Cancel', 'button', 'closeModal'),
-                                        createBtn('deleteBtn', 'Delete Task', 'button', 'showDeleteTodoItemModal'),
-                                        createBtn('saveBtn', 'Save Changes', 'button', 'editTodoItem'));
+    const editTodoItemBtns = [createBtn('cancelBtn', 'Cancel', 'button', 'closeModal'),
+                             createBtn('deleteBtn', 'Delete Task', 'button', 'showDeleteTodoItemModal'),
+                             createBtn('saveBtn', 'Save Changes', 'button', 'editTodoItem')];
 
     return { newTodoItemBtns, editTodoItemBtns };
 })();
@@ -165,6 +164,7 @@ const editProjectDropdownOption = (oldOptionName, newOptionName) => {
 
     const projectOption = document.querySelector(`[value="${oldOptionName}"]`);
     projectOption.value = newOptionName;
+    projectOption.textContent = newOptionName;
 }
 
 const displayModalNew = () => {                            // These could be put in a single fn with an if statement... but then we have to query the e param
@@ -177,10 +177,6 @@ const displayModalEdit = () => {
     removeAllChildNodes(modalBtnsDiv);
     appendChildren(modalBtnsDiv, createTodoItemBtns.editTodoItemBtns);
     todoItemModal.showModal();
-}
-
-function createArray(...itemsToPush) {  // Fn declaration so it can be used anywhere. DON'T NEED THIS?
-    return itemsToPush;
 }
 
 const uuidHandler = (function() {

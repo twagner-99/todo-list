@@ -1,37 +1,29 @@
-import { createProject, createTodoItem, getTodoItemInfo, editTodoItem, editProjectName, moveTodoItem, deleteTodoItem, deleteProject } from "./todo-items.js";
+import { createProject, createTodoItem, editTodoItem, editProjectName, deleteTodoItem, deleteProject } from "./todo-items.js";
 import { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler, currentProjectHandler, editProjectDropdownOption, editProjectBtn } from "./user-interface.js";
 import "./styles.css"
 
-const newTodoItemBtn = document.querySelector('#new-todo-item-btn');
-const newProjectBtn = document.querySelector('#new-project-btn');
-const newProjectModal = document.querySelector('#new-project-modal');
-const newProjectForm = document.querySelector('#new-project-form');
-const createProjectBtn = document.querySelector('#create-project-btn');
-const allItemsBtn = document.querySelector('#all-items-btn');
-const todoItemModal = document.querySelector('#todo-item-modal');
-const todoItemForm = document.querySelector('#todo-item-form');
 const sidebarDiv = document.querySelector('#sidebar');
 const contentDiv = document.querySelector('#content');
-const deleteTodoItemModal = document.querySelector('#delete-todo-item-modal');
-const updateProjectModal = document.querySelector('#update-project-modal');
-const deleteProjectModal = document.querySelector('#delete-project-modal');
-const editProjectNameModal = document.querySelector('#edit-project-name-modal');
+const newProjectForm = document.querySelector('#new-project-form');
+const createProjectBtn = document.querySelector('#create-project-btn');
 const editProjectNameInput = document.querySelector('#edit-project-name-input');
-
-const title = document.querySelector('#title');
-const dueDate = document.querySelector('#due-date');
-const priority = document.querySelector('#priority');
-const project = document.querySelector('#project-dropdown');
-
-// const todoItemFormInputs = document.querySelectorAll('#todo-item-form input, #todo-item-form select');
-
-const todoItemFormInputs = {title: document.querySelector('#title'),
-                            dueDate: document.querySelector('#due-date'),
-                            priority: document.querySelector('#priority'),
-                            project: document.querySelector('#project-dropdown'),
-                            };
-
 const newProjectInput = document.querySelector('#new-project-input');
+
+const modals = {
+    newProjectModal: document.querySelector('#new-project-modal'),
+    deleteTodoItemModal: document.querySelector('#delete-todo-item-modal'),
+    updateProjectModal: document.querySelector('#update-project-modal'),
+    deleteProjectModal: document.querySelector('#delete-project-modal'),
+    editProjectNameModal: document.querySelector('#edit-project-name-modal'),
+}
+
+const todoItemFormInputs = {
+    title: document.querySelector('#title'),
+    dueDate: document.querySelector('#due-date'),
+    priority: document.querySelector('#priority'),
+    project: document.querySelector('#project-dropdown'),
+};
+
 
 // MIGHT WANT TO QUERY SELECT ALL BASED ON TYPE AND THEN ADD EVENT LISTENERS THAT WAY.
 
@@ -51,7 +43,11 @@ for (let currentModal of allModals) {
                 return;
             }
 
-            createTodoItem(title.value, dueDate.value, priority.value, project.value);
+            createTodoItem(todoItemFormInputs.title.value,
+                           todoItemFormInputs.dueDate.value,
+                           todoItemFormInputs.priority.value,
+                           todoItemFormInputs.project.value);
+
             currentForm.reset();
             displayProjectsAll();
             currentModal.close();
@@ -74,7 +70,7 @@ for (let currentModal of allModals) {
 
         if (e.target.dataset.purpose === 'showDeleteTodoItemModal') {
             currentModal.close();
-            deleteTodoItemModal.showModal();
+            modals.deleteTodoItemModal.showModal();
         }
 
         if (e.target.dataset.purpose === 'deleteTodoItem') {
@@ -85,12 +81,12 @@ for (let currentModal of allModals) {
 
         if (e.target.dataset.purpose === 'showDeleteProjectModal') {
             currentModal.close();
-            deleteProjectModal.showModal();
+            modals.deleteProjectModal.showModal();
         }
 
         if (e.target.dataset.purpose === 'showEditProjectNameModal') {
             currentModal.close();
-            editProjectNameModal.showModal();
+            modals.editProjectNameModal.showModal();
         }
 
         if (e.target.dataset.purpose === 'deleteProject') {
@@ -126,7 +122,7 @@ sidebarDiv.addEventListener('click', (e) => {
     }
 
     if (e.target.dataset.purpose === 'showNewProjectModal') {
-        newProjectModal.showModal();
+        modals.newProjectModal.showModal();
     }
 })
 
@@ -152,12 +148,12 @@ contentDiv.addEventListener('click', (e) => {
 
     if (e.target.dataset.purpose === 'showDeleteTodoItemModal') {
         uuidHandler.setCurrentUuid(e);
-        deleteTodoItemModal.showModal();
+        modals.deleteTodoItemModal.showModal();
     }
 
     if (e.target.dataset.purpose === 'showUpdateProjectModal') {
         currentProjectHandler.setCurrentProject(e);
-        updateProjectModal.showModal();
+        modals.updateProjectModal.showModal();
     }
 })
 
@@ -171,7 +167,7 @@ createProjectBtn.addEventListener('click', () => { // Should prob get moved unde
         addProjectBtn(newProjectInput.value);
         addProjectDropdownOptions(newProjectInput.value);
         newProjectForm.reset();
-        newProjectModal.close();
+        modals.newProjectModal.close();
     }
     // QUESTION! SHOULD ALL THESE BE BLOBBED INTO THEIR OWN FN UNDER USER-INTERFACE
     // AND THEN CALL THAT SINGLE FN HERE? PROBABLY

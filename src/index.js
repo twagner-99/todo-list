@@ -24,9 +24,6 @@ const todoItemFormInputs = {
     project: document.querySelector('#project-dropdown'),
 };
 
-
-// MIGHT WANT TO QUERY SELECT ALL BASED ON TYPE AND THEN ADD EVENT LISTENERS THAT WAY.
-
 // Add event listeners to buttons within modals. Only for buttons used in multiple places.
 const allModals = document.querySelectorAll('dialog');
 for (let currentModal of allModals) {
@@ -108,6 +105,19 @@ for (let currentModal of allModals) {
             currentModal.close();
             displayProjectsAll(); // Need to find a way to keep on the users last view, whether it was all projects or a single project
         }
+
+        if (e.target.dataset.purpose === 'createProject') {
+            if (!(newProjectForm.reportValidity())) {
+                return;
+            }
+
+            if (createProject(newProjectInput.value)) { // If project doesn't exist, it'll create it and continue on. If it does exist, it'll alert.
+                addProjectBtn(newProjectInput.value);
+                addProjectDropdownOptions(newProjectInput.value);
+                currentForm.reset();
+                currentModal.close();
+            }
+        }
     })
 }
 
@@ -155,20 +165,4 @@ contentDiv.addEventListener('click', (e) => {
         currentProjectHandler.setCurrentProject(e);
         modals.updateProjectModal.showModal();
     }
-})
-
-
-createProjectBtn.addEventListener('click', () => { // Should prob get moved under modal section to leverage event bubbling
-    if (!(newProjectForm.reportValidity())) {   // should prob be in it's own fn, like form check. and then the form it's checking is a parameter
-        return;
-    }
-    
-    if (createProject(newProjectInput.value)) { // If project doesn't exist, it'll create it and continue on. If it does exist, it'll alert.
-        addProjectBtn(newProjectInput.value);
-        addProjectDropdownOptions(newProjectInput.value);
-        newProjectForm.reset();
-        modals.newProjectModal.close();
-    }
-    // QUESTION! SHOULD ALL THESE BE BLOBBED INTO THEIR OWN FN UNDER USER-INTERFACE
-    // AND THEN CALL THAT SINGLE FN HERE? PROBABLY
 })

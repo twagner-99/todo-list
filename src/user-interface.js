@@ -24,8 +24,8 @@ const displayProjectSingle = (project) => {
     projectMainHeader.textContent = project;
     
     const projectDiv = createProjectSingle(project);
+    projectDiv.prepend(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
     projectDiv.prepend(projectMainHeader);
-    projectDiv.appendChild(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
     todoListDiv.appendChild(projectDiv);
 }
 
@@ -35,15 +35,15 @@ const createProjectsAll = (project) => {
     if (project === 'default') {
         const projectMainHeader = document.createElement('h1'); // add ... for delete and rename project
         projectMainHeader.textContent = 'All Items';
+        // projectDiv.prepend(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
         projectDiv.prepend(projectMainHeader);
-        projectDiv.appendChild(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
     }
 
     else {
         const projectSubheader = document.createElement('h2'); // add ... for delete and rename project
         projectSubheader.textContent = project;
+        projectDiv.prepend(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
         projectDiv.prepend(projectSubheader);
-        projectDiv.appendChild(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
     }
 
     return projectDiv;

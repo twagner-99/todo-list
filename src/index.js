@@ -4,8 +4,6 @@ import "./styles.css"
 
 const sidebarDiv = document.querySelector('#sidebar');
 const contentDiv = document.querySelector('#content');
-const newProjectForm = document.querySelector('#new-project-form');
-const createProjectBtn = document.querySelector('#create-project-btn');
 const editProjectNameInput = document.querySelector('#edit-project-name-input');
 const newProjectInput = document.querySelector('#new-project-input');
 
@@ -24,7 +22,7 @@ const todoItemFormInputs = {
     project: document.querySelector('#project-dropdown'),
 };
 
-// Add event listeners to buttons within modals. Only for buttons used in multiple places.
+// Add event listeners to buttons within modals.
 const allModals = document.querySelectorAll('dialog');
 for (let currentModal of allModals) {
     const currentForm = document.querySelector(`#${currentModal.id} > form`);
@@ -35,7 +33,7 @@ for (let currentModal of allModals) {
             currentModal.close();
         }
 
-        if (e.target.dataset.purpose === 'createTodoItem') {
+        else if (e.target.dataset.purpose === 'createTodoItem') {
             if (!(currentForm.reportValidity())) {
                 return;
             }
@@ -50,7 +48,7 @@ for (let currentModal of allModals) {
             currentModal.close();
         }
 
-        if (e.target.dataset.purpose === 'editTodoItem') {
+        else if (e.target.dataset.purpose === 'editTodoItem') {
             let originalTodoItem = currentTodoItemHandler.getCurrentTodoItem().todoItem;
 
             for (let formInput in todoItemFormInputs) {
@@ -65,28 +63,28 @@ for (let currentModal of allModals) {
             currentModal.close();
         }
 
-        if (e.target.dataset.purpose === 'showDeleteTodoItemModal') {
+        else if (e.target.dataset.purpose === 'showDeleteTodoItemModal') {
             currentModal.close();
             modals.deleteTodoItemModal.showModal();
         }
 
-        if (e.target.dataset.purpose === 'deleteTodoItem') {
+        else if (e.target.dataset.purpose === 'deleteTodoItem') {
             deleteTodoItem(uuidHandler.getCurrentUuid());
             currentModal.close();
             displayProjectsAll();   // Need to find a way to keep on the users last view, whether it was all projects or a single project
         }
 
-        if (e.target.dataset.purpose === 'showDeleteProjectModal') {
+        else if (e.target.dataset.purpose === 'showDeleteProjectModal') {
             currentModal.close();
             modals.deleteProjectModal.showModal();
         }
 
-        if (e.target.dataset.purpose === 'showEditProjectNameModal') {
+        else if (e.target.dataset.purpose === 'showEditProjectNameModal') {
             currentModal.close();
             modals.editProjectNameModal.showModal();
         }
 
-        if (e.target.dataset.purpose === 'deleteProject') {
+        else if (e.target.dataset.purpose === 'deleteProject') {
             let project = currentProjectHandler.getCurrentProject();
             deleteProject(project);
             deleteProjectDropdownOptions(project);
@@ -95,7 +93,7 @@ for (let currentModal of allModals) {
             displayProjectsAll();
         }
 
-        if (e.target.dataset.purpose === 'editProjectName') {
+        else if (e.target.dataset.purpose === 'editProjectName') {
             let oldProjectName = currentProjectHandler.getCurrentProject();
             let newProjectName = editProjectNameInput.value
 
@@ -106,8 +104,8 @@ for (let currentModal of allModals) {
             displayProjectsAll(); // Need to find a way to keep on the users last view, whether it was all projects or a single project
         }
 
-        if (e.target.dataset.purpose === 'createProject') {
-            if (!(newProjectForm.reportValidity())) {
+        else if (e.target.dataset.purpose === 'createProject') {
+            if (!(currentForm.reportValidity())) {
                 return;
             }
 
@@ -127,15 +125,16 @@ sidebarDiv.addEventListener('click', (e) => {
         displayProjectsAll();
     }
 
-    if (e.target.dataset.purpose === 'displayProjectSingle') {
+    else if (e.target.dataset.purpose === 'displayProjectSingle') {
         displayProjectSingle(e.target.id);
     }
 
-    if (e.target.dataset.purpose === 'showNewProjectModal') {
+    else if (e.target.dataset.purpose === 'showNewProjectModal') {
         modals.newProjectModal.showModal();
     }
 })
 
+// Add event listeners to buttons in main content area.
 contentDiv.addEventListener('click', (e) => {
     if (e.target.dataset.purpose === 'showEditTodoItemModal') {
         uuidHandler.setCurrentUuid(e);
@@ -152,16 +151,16 @@ contentDiv.addEventListener('click', (e) => {
         displayModalEdit();
     }
 
-    if (e.target.dataset.purpose === 'showNewTodoItemModal') {
+    else if (e.target.dataset.purpose === 'showNewTodoItemModal') {
         displayModalNew();
     }
 
-    if (e.target.dataset.purpose === 'showDeleteTodoItemModal') {
+    else if (e.target.dataset.purpose === 'showDeleteTodoItemModal') {
         uuidHandler.setCurrentUuid(e);
         modals.deleteTodoItemModal.showModal();
     }
 
-    if (e.target.dataset.purpose === 'showUpdateProjectModal') {
+    else if (e.target.dataset.purpose === 'showUpdateProjectModal') {
         currentProjectHandler.setCurrentProject(e);
         modals.updateProjectModal.showModal();
     }

@@ -15,15 +15,40 @@ img {
 
 body {
     display: grid;
-    grid-template-columns: 1fr 8fr;
+    grid-template-columns: 200px minmax(200px, 1fr);
     min-height: 100vh;
 }
 
 #sidebar {
-    
     border: 1px solid black;
 }
 
 .inline-block {
     display: inline-block;
+}
+
+nav > button {
+    display: block;
+    margin: .25rem .25rem;
+}
+
+#sidebar > h1 {
+    margin: .5rem .5rem 0 .5rem;
+}
+
+#content {
+    padding: .5rem;
+}
+
+#content > * {
+    margin-bottom: .5rem;
+}
+
+.project-container {
+    margin-bottom: 1rem;
+}
+
+.project-container > h1, h2 {
+    display: inline-block;
+    margin-right: .5rem;
 }

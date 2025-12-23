@@ -51,6 +51,7 @@ const createProjectsAll = (project) => {
 const createProjectSingle = (project) => {
     const projectDiv = document.createElement('div');
     projectDiv.id = project;
+    projectDiv.classList.add('project-container');
 
     const todoList = getTodoList();
     for (let todoItem of todoList[project]) {
@@ -190,6 +191,18 @@ const uuidHandler = (function() {
     
     return { setCurrentUuid, getCurrentUuid };
 })();
+
+// const uuidHandler = {
+//     uuid: '',
+
+//     get currentUuid() {
+//         return this.uuid;
+//     },
+
+//     set currentUuid(e) {
+//         this.uuid = e.target.parentElement.dataset.uuid;
+//     },
+// }
 
 const currentTodoItemHandler = (function() {
     let currentTodoItem;

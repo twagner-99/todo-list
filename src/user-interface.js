@@ -66,15 +66,18 @@ const createTodoItemDiv = (todoItem) => {
     const todoItemDiv = document.createElement('div');
     const todoItemPara = document.createElement('p');
     const dueDatePara = document.createElement('p');
+    const checkbox = document.createElement('input');
 
     const deleteBtn = createBtn('deleteBtn', 'Delete', 'button', 'showDeleteTodoItemModal');
     const editBtn = createBtn('editBtn', 'Edit', 'button', 'showEditTodoItemModal');
 
     todoItemDiv.dataset.uuid = todoItem.uuid;
     todoItemPara.textContent = todoItem.title;
+    todoItemPara.classList.add('project-name-para');
     dueDatePara.textContent = `Due Date: ${todoItem.dueDate}`;
+    checkbox.type = 'checkbox';
 
-    const childrenToAppend = [todoItemPara, dueDatePara, deleteBtn, editBtn];
+    const childrenToAppend = [checkbox, todoItemPara, dueDatePara, deleteBtn, editBtn];
     appendChildren(todoItemDiv, childrenToAppend);
 
     return todoItemDiv;

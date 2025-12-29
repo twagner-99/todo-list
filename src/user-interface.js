@@ -1,7 +1,7 @@
-import { getTodoList, createTodoItem, deleteTodoItem, editTodoItem, getTodoItemInfo } from "./todo-items";
+import { getTodoList, getTodoItemInfo } from "./todo-items";
+import { intlFormatDistance, differenceInCalendarDays } from "date-fns";
 
 const todoListDiv = document.querySelector('#todo-list');
-const projectHeadingMain = document.querySelector('#project-heading');
 const todoItemModal = document.querySelector('#todo-item-modal');
 const modalBtnsDiv = document.querySelector('#modal-btns-div');
 const projectDropdown = document.querySelector('#project-dropdown');
@@ -74,7 +74,19 @@ const createTodoItemDiv = (todoItem) => {
     todoItemDiv.dataset.uuid = todoItem.uuid;
     todoItemPara.textContent = todoItem.title;
     todoItemPara.classList.add('project-name-para');
-    dueDatePara.textContent = `Due Date: ${todoItem.dueDate}`;
+    
+    const dateToday = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
+    const dueDateFormatted = intlFormatDistance(todoItem.dueDate, dateToday, {unit: 'day'});
+    const daysUntilDueDate = differenceInCalendarDays(todoItem.dueDate, dateToday);
+
+    if (daysUntilDueDate <= 7) {
+        dueDatePara.textContent = `Due Date: ${dueDateFormatted}`;
+    }
+
+    else {
+        dueDatePara.textContent = `Due Date: ${todoItem.dueDate}`;
+    }
+
     checkbox.type = 'checkbox';
 
     const childrenToAppend = [checkbox, todoItemPara, dueDatePara, deleteBtn, editBtn];
@@ -194,18 +206,6 @@ const uuidHandler = (function() {
     
     return { setCurrentUuid, getCurrentUuid };
 })();
-
-// const uuidHandler = {
-//     uuid: '',
-
-//     get currentUuid() {
-//         return this.uuid;
-//     },
-
-//     set currentUuid(e) {
-//         this.uuid = e.target.parentElement.dataset.uuid;
-//     },
-// }
 
 const currentTodoItemHandler = (function() {
     let currentTodoItem;

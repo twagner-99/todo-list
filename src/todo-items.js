@@ -1,3 +1,5 @@
+import { displayProjectsAll } from "./user-interface";
+
 const TodoItemCreator = class {
     constructor(title, dueDate, priority, project) {
         this.title = title;
@@ -5,12 +7,13 @@ const TodoItemCreator = class {
         this.priority = priority;
         this.project = project;
         this.uuid = self.crypto.randomUUID();
+        this.status = 'incomplete';
         // Probably will need to add property for completetionStatus = true or false
         // that will toggle when checkboxes are checked 
     }
 };
 
-const todoList = {default: [],};
+let todoList = {default: [],};
 
 const createProject = (project) => {
     if (!(project in todoList)) {   // If project doesn't exist yet, create it.
@@ -97,4 +100,24 @@ const deleteProject = (project) => {    // UI won't have option to delete defaul
     delete todoList[project];
 }
 
-export { createProject, createTodoItem, getTodoList, getTodoItemInfo, editTodoItem, editProjectName, moveTodoItem, deleteTodoItem, deleteProject };
+const populateStorage = () => {
+    localStorage.setItem('todoList', JSON.stringify(todoList));
+}
+
+const getStorage = () => {
+    todoList = JSON.parse(localStorage.getItem('todoList'));
+    console.log(todoList);
+}
+
+const storageHandler = () => {
+    if (!localStorage.length) {
+        populateStorage();
+        getStorage();
+    }
+    
+    else {
+        getStorage();
+    }
+}
+
+export { createProject, createTodoItem, getTodoList, getTodoItemInfo, editTodoItem, editProjectName, moveTodoItem, deleteTodoItem, deleteProject, storageHandler, populateStorage };

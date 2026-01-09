@@ -75,6 +75,7 @@ const createTodoItemDiv = (todoItem) => {
     todoItemPara.textContent = todoItem.title;
     todoItemPara.classList.add('project-name-para');
     
+    // This should be broken out into it's own function.
     const dateToday = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
     const dueDateFormatted = intlFormatDistance(todoItem.dueDate, dateToday, {unit: 'day'});
     const daysUntilDueDate = differenceInCalendarDays(todoItem.dueDate, dateToday);
@@ -88,6 +89,15 @@ const createTodoItemDiv = (todoItem) => {
     }
 
     checkbox.type = 'checkbox';
+    checkbox.dataset.purpose = 'statusCheckbox';
+
+    if (todoItem.status === 'complete') {
+        checkbox.checked = true;
+    }
+
+    else {
+        checkbox.checked = false;
+    }
 
     const childrenToAppend = [checkbox, todoItemPara, dueDatePara, deleteBtn, editBtn];
     appendChildren(todoItemDiv, childrenToAppend);
@@ -109,6 +119,16 @@ const editProjectBtn = (oldProjectName, newProjectName) => {
     const projectBtn = document.querySelector(`button[id="${oldProjectName}"]`);
     projectBtn.id = newProjectName;
     projectBtn.textContent = newProjectName;
+}
+
+const reloadProjectBtns = () => {
+    const todoList = getTodoList();
+    
+    for (let project in todoList) {
+        if (project !== 'default') {
+            addProjectBtn(project);
+        }
+    }
 }
 
 const removeAllChildNodes = (parentNode) => {
@@ -183,6 +203,14 @@ const editProjectDropdownOption = (oldOptionName, newOptionName) => {
     projectOption.textContent = newOptionName;
 }
 
+const reloadProjectDropdownOptions = () => {
+    const todoList = getTodoList();
+    
+    for (let project in todoList) {
+        addProjectDropdownOptions(project);
+    }
+}
+
 const displayModalNew = () => {                            // These could be put in a single fn with an if statement... but then we have to query the e param
     removeAllChildNodes(modalBtnsDiv);
     appendChildren(modalBtnsDiv, createTodoItemBtns.newTodoItemBtns); // This way, we just run one when one btn is clicked, and the other when another btn is clicked.                        // Seems better for separation for DOM to do it this way.
@@ -207,7 +235,7 @@ const uuidHandler = (function() {
     return { setCurrentUuid, getCurrentUuid };
 })();
 
-const currentTodoItemHandler = (function() {
+const currentTodoItemHandler = (function() {    // this can incorporate uuidHandler stuff so it's easier
     let currentTodoItem;
 
     const setCurrentTodoItem = (uuid) => {
@@ -232,4 +260,21 @@ const currentProjectHandler = (function() {
     return { setCurrentProject, getCurrentProject };
 })();
 
-export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler, currentProjectHandler, editProjectDropdownOption, editProjectBtn };
+const taskStatusToggler = (e) => {
+    uuidHandler.setCurrentUuid(e);
+    currentTodoItemHandler.setCurrentTodoItem(uuidHandler.getCurrentUuid(e));
+
+    const currentTodoItem = currentTodoItemHandler.getCurrentTodoItem().todoItem;
+    
+    if (e.target.checked) {
+        currentTodoItem.status = 'complete';
+        console.log(currentTodoItem.status);
+    }
+
+    else {
+        currentTodoItem.status = 'incomplete';
+        console.log(currentTodoItem.status);
+    }
+}
+
+export { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler, currentProjectHandler, editProjectDropdownOption, editProjectBtn, reloadProjectBtns, reloadProjectDropdownOptions, taskStatusToggler };

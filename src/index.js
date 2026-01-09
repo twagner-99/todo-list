@@ -1,5 +1,5 @@
-import { createProject, createTodoItem, editTodoItem, editProjectName, deleteTodoItem, deleteProject } from "./todo-items.js";
-import { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler, currentProjectHandler, editProjectDropdownOption, editProjectBtn } from "./user-interface.js";
+import { createProject, createTodoItem, editTodoItem, editProjectName, deleteTodoItem, deleteProject, storageHandler, populateStorage } from "./todo-items.js";
+import { displayProjectsAll, displayProjectSingle, displayModalNew, addProjectDropdownOptions, deleteProjectDropdownOptions, addProjectBtn, deleteProjectBtn, uuidHandler, displayModalEdit, currentTodoItemHandler, currentProjectHandler, editProjectDropdownOption, editProjectBtn, reloadProjectBtns, reloadProjectDropdownOptions, taskStatusToggler } from "./user-interface.js";
 import "./styles.css"
 
 const sidebarDiv = document.querySelector('#sidebar');
@@ -164,4 +164,21 @@ contentDiv.addEventListener('click', (e) => {
         currentProjectHandler.setCurrentProject(e);
         modals.updateProjectModal.showModal();
     }
+
+    else if (e.target.dataset.purpose === 'statusCheckbox') {
+        taskStatusToggler(e);
+    }
 })
+
+document.addEventListener('DOMContentLoaded', () => {
+    storageHandler();
+    displayProjectsAll();
+    reloadProjectBtns();
+    reloadProjectDropdownOptions();
+});
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+        populateStorage();
+    }
+});

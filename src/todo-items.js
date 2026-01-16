@@ -1,5 +1,3 @@
-import { displayProjectsAll } from "./user-interface";
-
 const TodoItemCreator = class {
     constructor(title, dueDate, priority, project) {
         this.title = title;
@@ -8,8 +6,6 @@ const TodoItemCreator = class {
         this.project = project;
         this.uuid = self.crypto.randomUUID();
         this.status = 'incomplete';
-        // Probably will need to add property for completetionStatus = true or false
-        // that will toggle when checkboxes are checked 
     }
 };
 

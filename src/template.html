@@ -11,7 +11,7 @@
         <button id="new-project-btn" data-purpose="showNewProjectModal">+</button>
         <nav>
             <button id="all-items-btn" data-purpose="displayProjectsAll">All Items</button>
-            <!-- All other project btns will be dynamically created with JS -->
+            <!-- All other project btns dynamically created with JS -->
         </nav>
     </div>
 
@@ -20,7 +20,7 @@
             <div id="default" class="project-container">
                 <h1 id="project-heading" class="inline-block">All Items</h1>
             </div>
-            <!-- Additional project content will be dynamically created with JS -->
+            <!-- Additional project content dynamically created with JS -->
         </div>  
         <button id="new-todo-item-btn" data-purpose="showNewTodoItemModal">+ Add</button>
     </div>
@@ -55,13 +55,7 @@
                 </div>
             </fieldset>
             <div id="modal-btns-div">
-                <!-- If creating new todoItem (createNewTodoItemBtns):
-                        - "Cancel" button
-                        - "Create Task" button 
-                    If editing (createEditTodoItemBtns): 
-                        - "Delete Task" button
-                        - "Dischard Changes" button
-                        - "Save Changes" button -->
+                <!-- Btns dynamically created depending on context -->
             </div>
         </form>
     </dialog>

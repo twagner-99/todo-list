@@ -71,7 +71,7 @@ for (let currentModal of allModals) {
         else if (e.target.dataset.purpose === 'deleteTodoItem') {
             deleteTodoItem(uuidHandler.getCurrentUuid());
             currentModal.close();
-            displayProjectsAll();   // Need to find a way to keep on the users last view, whether it was all projects or a single project
+            displayProjectsAll();   // MINOR UPDATE - Find a way to keep on the users last view (either all projects or a single project)
         }
 
         else if (e.target.dataset.purpose === 'showDeleteProjectModal') {
@@ -101,7 +101,7 @@ for (let currentModal of allModals) {
             editProjectDropdownOption(oldProjectName, newProjectName);
             editProjectBtn(oldProjectName, newProjectName);
             currentModal.close();
-            displayProjectsAll(); // Need to find a way to keep on the users last view, whether it was all projects or a single project
+            displayProjectsAll(); // MINOR UPDATE - Find a way to keep on the users last view (either all projects or a single project)
         }
 
         else if (e.target.dataset.purpose === 'createProject') {

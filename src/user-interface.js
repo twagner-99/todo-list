@@ -75,7 +75,7 @@ const createTodoItemDiv = (todoItem) => {
     todoItemPara.textContent = todoItem.title;
     todoItemPara.classList.add('project-name-para');
     
-    // This should be broken out into it's own function.
+    // MINOR UPDATE - Break out into date formatter function.
     const dateToday = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
     const dueDateFormatted = intlFormatDistance(todoItem.dueDate, dateToday, {unit: 'day'});
     const daysUntilDueDate = differenceInCalendarDays(todoItem.dueDate, dateToday);
@@ -158,8 +158,6 @@ const createTodoItemBtns = (function() {
     return { newTodoItemBtns, editTodoItemBtns };
 })();
 
-// NEED TO ADD AUTOFOCUS. ADD OPTIONAL PARAM AND ADD TO SAVEFORMVALUE BUTTONS? OR CANCEL BUTTONS?
-
 const appendChildren = (parentNode, children) => {
     children.forEach((child) => {
         parentNode.appendChild(child);
@@ -185,7 +183,7 @@ const addProjectDropdownOptions = (project) => {
 }
 
 const deleteProjectDropdownOptions = (project) => {
-    if (project === 'default') {                        // Not allowed to get rid of default
+    if (project === 'default') {    // Not allowed to get rid of default
         return;
     }
 
@@ -211,9 +209,9 @@ const reloadProjectDropdownOptions = () => {
     }
 }
 
-const displayModalNew = () => {                            // These could be put in a single fn with an if statement... but then we have to query the e param
+const displayModalNew = () => {
     removeAllChildNodes(modalBtnsDiv);
-    appendChildren(modalBtnsDiv, createTodoItemBtns.newTodoItemBtns); // This way, we just run one when one btn is clicked, and the other when another btn is clicked.                        // Seems better for separation for DOM to do it this way.
+    appendChildren(modalBtnsDiv, createTodoItemBtns.newTodoItemBtns);
     todoItemModal.showModal();
 }
 
@@ -235,7 +233,7 @@ const uuidHandler = (function() {
     return { setCurrentUuid, getCurrentUuid };
 })();
 
-const currentTodoItemHandler = (function() {    // this can incorporate uuidHandler stuff so it's easier
+const currentTodoItemHandler = (function() {
     let currentTodoItem;
 
     const setCurrentTodoItem = (uuid) => {

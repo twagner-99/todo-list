@@ -23,6 +23,17 @@ const todoItemFormInputs = {
 };
 
 // Add event listeners to buttons within modals.
+
+// We have
+    // modalShower (deleteTodoItem, deleteProject, editProjectName)
+    // modalCloser
+    // todoItemCreator
+    // todoItemEditor
+    // todoItemDeleter
+    // projectCreator
+    // projectNameEditor
+    // projectDeleter
+    
 const allModals = document.querySelectorAll('dialog');
 for (let currentModal of allModals) {
     const currentForm = document.querySelector(`#${currentModal.id} > form`);
@@ -120,6 +131,11 @@ for (let currentModal of allModals) {
 }
 
 // Add event listners to buttons in sidebar.
+
+// We have
+    // modalShower (newProject)
+    // projectDisplayer (single and all)
+
 sidebarDiv.addEventListener('click', (e) => {
     if (e.target.dataset.purpose === 'displayProjectsAll') {
         displayProjectsAll();
@@ -135,6 +151,11 @@ sidebarDiv.addEventListener('click', (e) => {
 })
 
 // Add event listeners to buttons in main content area.
+
+// We have
+    // modalShower (editTodoItem, newTodoItem, deleteTodoItem, updateProject)
+    // checkboxToggler
+
 contentDiv.addEventListener('click', (e) => {
     if (e.target.dataset.purpose === 'showEditTodoItemModal') {
         uuidHandler.setCurrentUuid(e);

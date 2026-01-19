@@ -1,4 +1,6 @@
-const TodoItemCreator = class {
+let todoList = {default: [],};
+
+class TodoItemCreator {
     constructor(title, dueDate, priority, project) {
         this.title = title;
         this.dueDate = dueDate;
@@ -7,9 +9,38 @@ const TodoItemCreator = class {
         this.uuid = self.crypto.randomUUID();
         this.status = 'incomplete';
     }
+
+    addTodoItem() {
+        if (!(this.project in todoList)) {
+            return;
+        }
+        
+        todoList[this.project].push(this);
+    }
+
+    deleteTodoItem() {
+        const index = todoList[this.project].indexOf(this);
+
+        todoList[this.project].splice(index, 1);
+    }
+
+    moveTodoItem (project) {
+        this.deleteTodoItem();
+
+        this.project = project;
+        todoList[project].push(this);
+    }
+
+    editTodoItem(property, newValue) {
+        if (property === 'project') {
+            this.moveTodoItem(newValue);
+        }
+        
+        this[property] = newValue;
+    }
+
 };
 
-let todoList = {default: [],};
 
 const createProject = (project) => {
     if (!(project in todoList)) {   // If project doesn't exist yet, create it.
@@ -23,16 +54,20 @@ const createProject = (project) => {
     }
 }
 
-const createTodoItem = (title, dueDate, priority, project) => {
-    if (!(project in todoList)) {
-        return;
-    }
+// const createTodoItem = (title, dueDate, priority, project) => {
+//     if (!(project in todoList)) {
+//         return;
+//     }
     
-    const todoItem = new TodoItemCreator(title, dueDate, priority, project);
-    todoList[project].push(todoItem);
-}
+//     const todoItem = new TodoItemCreator(title, dueDate, priority, project);
+//     todoList[project].push(todoItem);
+// }
 
 const getTodoList = () => todoList;
+
+const getTodoItem = (uuid) => {
+
+}
 
 const getTodoItemInfo = (uuid) => {
     for (let project in todoList) {
@@ -48,22 +83,22 @@ const getTodoItemInfo = (uuid) => {
     }
 }
 
-const moveTodoItem = (uuid, project) => {
-    const todoItemToMove = getTodoItemInfo(uuid).todoItem;
-    deleteTodoItem(uuid);
+// const moveTodoItem = (uuid, project) => {
+//     const todoItemToMove = getTodoItemInfo(uuid).todoItem;
+//     deleteTodoItem(uuid);
 
-    todoItemToMove.project = project;
-    todoList[project].push(todoItemToMove);
-}
+//     todoItemToMove.project = project;
+//     todoList[project].push(todoItemToMove);
+// }
 
-const editTodoItem = (uuid, property, newValue) => {
-    if (property === 'project') {
-        moveTodoItem(uuid, newValue);
-    }
+// const editTodoItem = (uuid, property, newValue) => {
+//     if (property === 'project') {
+//         moveTodoItem(uuid, newValue);
+//     }
     
-    const todoItemToEdit = getTodoItemInfo(uuid).todoItem;
-    todoItemToEdit[property] = newValue;
-}
+//     const todoItemToEdit = getTodoItemInfo(uuid).todoItem;
+//     todoItemToEdit[property] = newValue;
+// }
 
 const editProjectName = (oldProjectName, newProjectName) => {
     if (newProjectName in todoList) {
@@ -79,13 +114,13 @@ const editProjectName = (oldProjectName, newProjectName) => {
     delete todoList[oldProjectName];
 }
 
-const deleteTodoItem = (uuid) => {
-    const todoItemInfo = getTodoItemInfo(uuid);
-    const project = todoItemInfo.project;
-    const index = todoItemInfo.index;
+// const deleteTodoItem = (uuid) => {
+//     const todoItemInfo = getTodoItemInfo(uuid);
+//     const project = todoItemInfo.project;
+//     const index = todoItemInfo.index;
 
-    todoList[project].splice(index, 1);
-}
+//     todoList[project].splice(index, 1);
+// }
 
 
 const deleteProject = (project) => {    // UI won't have option to delete default

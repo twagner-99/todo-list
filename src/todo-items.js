@@ -1,5 +1,43 @@
 let todoList = {default: [],};
 
+class ProjectCreator {
+    constructor(project) {
+        this.project = project;
+
+        if (!(project in todoList)) {   // If project doesn't exist yet, create it.
+            todoList[project] = [];
+            return true;
+        }
+
+        else {
+            alert('Project name already exists. Please enter a new name.');
+            return false;
+        }
+    }
+
+    deleteProject() {                            // UI doesn't have option to delete default
+        if (this.project === 'default') {        // project but this is a fail safe.
+            return;
+        }    
+        
+        delete todoList[this.project];
+    }
+
+    editProjectName(newProjectName) {
+        if (newProjectName in todoList) {
+            alert('Project name already exists. Cannot rename.');
+            return;
+        }
+
+        todoList[newProjectName] = todoList[this.project];
+        for (let todoItem of todoList[newProjectName]) {
+            todoItem.project = newProjectName;
+        }
+
+        this.deleteProject();
+    }
+}
+
 class TodoItemCreator {
     constructor(title, dueDate, priority, project) {
         this.title = title;
@@ -41,18 +79,22 @@ class TodoItemCreator {
 
 };
 
+class ProjectCreator {
 
-const createProject = (project) => {
-    if (!(project in todoList)) {   // If project doesn't exist yet, create it.
-        todoList[project] = [];
-        return true;
-    }
-
-    else {
-        alert('Project name already exists. Please enter a new name.');
-        return false;
-    }
 }
+
+
+// const createProject = (project) => {
+//     if (!(project in todoList)) {   // If project doesn't exist yet, create it.
+//         todoList[project] = [];
+//         return true;
+//     }
+
+//     else {
+//         alert('Project name already exists. Please enter a new name.');
+//         return false;
+//     }
+// }
 
 // const createTodoItem = (title, dueDate, priority, project) => {
 //     if (!(project in todoList)) {
@@ -100,19 +142,19 @@ const getTodoItemInfo = (uuid) => {
 //     todoItemToEdit[property] = newValue;
 // }
 
-const editProjectName = (oldProjectName, newProjectName) => {
-    if (newProjectName in todoList) {
-        alert('Project name already exists. Cannot rename.');
-        return;
-    }
+// const editProjectName = (oldProjectName, newProjectName) => {
+//     if (newProjectName in todoList) {
+//         alert('Project name already exists. Cannot rename.');
+//         return;
+//     }
 
-    todoList[newProjectName] = todoList[oldProjectName];
-    for (let todoItem of todoList[newProjectName]) {
-        todoItem.project = newProjectName;
-    }
+//     todoList[newProjectName] = todoList[oldProjectName];
+//     for (let todoItem of todoList[newProjectName]) {
+//         todoItem.project = newProjectName;
+//     }
 
-    delete todoList[oldProjectName];
-}
+//     delete todoList[oldProjectName];
+// }
 
 // const deleteTodoItem = (uuid) => {
 //     const todoItemInfo = getTodoItemInfo(uuid);
@@ -123,13 +165,13 @@ const editProjectName = (oldProjectName, newProjectName) => {
 // }
 
 
-const deleteProject = (project) => {    // UI won't have option to delete default
-    if (project === 'default') {        // project but this is a fail safe.
-        return;
-    }    
+// const deleteProject = (project) => {    // UI won't have option to delete default
+//     if (project === 'default') {        // project but this is a fail safe.
+//         return;
+//     }    
     
-    delete todoList[project];
-}
+//     delete todoList[project];
+// }
 
 const populateStorage = () => {
     localStorage.setItem('todoList', JSON.stringify(todoList));

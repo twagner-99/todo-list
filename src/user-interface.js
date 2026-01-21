@@ -1,108 +1,134 @@
 import { getTodoList, getTodoItemInfo } from "./todo-items";
 import { intlFormatDistance, differenceInCalendarDays } from "date-fns";
 
+// IDEA - EXTEND TODOITEMS.JS CLASSES TO BE ABLE TO DO UI STUFF
 const todoListDiv = document.querySelector('#todo-list');
 const todoItemModal = document.querySelector('#todo-item-modal');
 const modalBtnsDiv = document.querySelector('#modal-btns-div');
 const projectDropdown = document.querySelector('#project-dropdown');
 const navBar = document.querySelector('nav');
 
-const displayProjectsAll = () => {
-    removeAllChildNodes(todoListDiv);
+class TodoItemUICreator extends TodoItemCreator {   
+    constructor(title, dueDate, priority, project) {
+        super(title, dueDate, priority, project);
+    }
     
-    const todoList = getTodoList();     // Do this each time to get current snapshot
-    for (let project in todoList) {
-        const projectDiv = createProjectsAll(project);
-        todoListDiv.appendChild(projectDiv);
+    createTodoItemDiv() {
+        const todoItemDiv = document.createElement('div');
+        const todoItemPara = document.createElement('p');
+        const dueDatePara = document.createElement('p');
+        const checkbox = document.createElement('input');
+        
+        const deleteBtn = createBtn('deleteBtn', 'Delete', 'button', 'showDeleteTodoItemModal');
+        const editBtn = createBtn('editBtn', 'Edit', 'button', 'showEditTodoItemModal');
+        
+        todoItemDiv.dataset.uuid = this.uuid;
+        todoItemPara.textContent = this.title;
+        todoItemPara.classList.add('project-name-para');
+        dueDatePara.textContent = this.formatDate();
+
+        checkbox.type = 'checkbox';
+        checkbox.dataset.purpose = 'statusCheckbox';
+        
+        this.toggleCheckbox();
+        
+        const childrenToAppend = [checkbox, todoItemPara, dueDatePara, deleteBtn, editBtn];
+        appendChildren(todoItemDiv, childrenToAppend);
+        
+        return todoItemDiv;
+    }
+
+    formatDate() {
+        const dateToday = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
+        const dueDateFormatted = intlFormatDistance(this.dueDate, dateToday, {unit: 'day'});
+        const daysUntilDueDate = differenceInCalendarDays(this.dueDate, dateToday);
+        
+        if (daysUntilDueDate <= 7) {
+            return `Due Date: ${dueDateFormatted}`;
+        }
+        
+        else {
+            return `Due Date: ${this.dueDate}`;
+        }
+    }
+
+    toggleCheckbox() {
+        if (this.status === 'complete') {
+            checkbox.checked = true;
+        }
+        
+        else {
+            checkbox.checked = false;
+        }
     }
 }
 
-const displayProjectSingle = (project) => {
-    removeAllChildNodes(todoListDiv);
-
-    const projectMainHeader = document.createElement('h1');
-    projectMainHeader.textContent = project;
+class ProjectUICreator extends ProjectCreator {
+    constructor(project) {
+        super(project);
+    }
     
-    const projectDiv = createProjectSingle(project);
-    projectDiv.prepend(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
-    projectDiv.prepend(projectMainHeader);
-    todoListDiv.appendChild(projectDiv);
-}
+    createProjectSingleUI() {
+        removeAllChildNodes(todoListDiv);
+        const project = super.getProjectName();
 
-const createProjectsAll = (project) => {
-    const projectDiv = createProjectSingle(project);
+        const projectDivSingle = document.createElement('div');
+        projectDivSingle.classList.add('project-container-single');
+        projectDivSingle.id = this[project];
 
-    if (project === 'default') {
+        projectDivSingle.prepend(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
+
         const projectMainHeader = document.createElement('h1');
-        projectMainHeader.textContent = 'All Items';
-        projectDiv.prepend(projectMainHeader);
+        projectMainHeader.textContent = project;
+        projectDivSingle.prepend(projectMainHeader);
+        
+        const todoList = getTodoList();
+
+        for (let todoItem of this[project]) {
+            const todoItemDiv = todoItem.createTodoItemDiv();
+            projectDivSingle.appendChild(todoItemDiv);
+        }
+
+        todoListDiv.appendChild(projectDivSingle);
     }
 
-    else {
-        const projectSubheader = document.createElement('h2');
-        projectSubheader.textContent = project;
-        projectDiv.prepend(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
-        projectDiv.prepend(projectSubheader);
+    static createProjectAllUI() {
+        removeAllChildNodes(todoListDiv);
+        const todoList = getTodoList();
+
+        const projectDivAll = document.createElement('div');
+        projectDivAll.classList.add('project-container-all');
+
+        for (let projectObj of todoList) {
+            for (let project in projectObj) {
+                const projectDivSingle = document.createElement('div');
+                projectDivSingle.classList.add('project-container-single');
+                projectDivSingle.id = this[project];
+
+                if (project === 'default') {
+                    const projectMainHeader = document.createElement('h1');
+                    projectMainHeader.textContent = 'All Items';
+                    projectDivSingle.prepend(projectMainHeader);
+                }
+
+                else {
+                    const projectSubheader = document.createElement('h2');
+                    projectSubheader.textContent = project;
+                    projectDivSingle.prepend(createBtn('updateProjectBtn', '...', 'button', 'showUpdateProjectModal'));
+                    projectDivSingle.prepend(projectSubheader);
+                }
+
+                for (let todoItem of projectObj[project]){
+                    const todoItemDiv = todoItem.createTodoItemDiv();
+                    projectDivSingle.appendChild(todoItemDiv);
+                }
+
+                projectDivAll.appendChild(projectDivSingle);
+            }
+        }
+
+        todoListDiv.appendChild(projectDivAll);
     }
-
-    return projectDiv;
-}
-
-const createProjectSingle = (project) => {
-    const projectDiv = document.createElement('div');
-    projectDiv.id = project;
-    projectDiv.classList.add('project-container');
-
-    const todoList = getTodoList();
-    for (let todoItem of todoList[project]) {
-        const todoItemDiv = createTodoItemDiv(todoItem);
-        projectDiv.appendChild(todoItemDiv);
-    }
-
-    return projectDiv;
-}
-
-const createTodoItemDiv = (todoItem) => {
-    const todoItemDiv = document.createElement('div');
-    const todoItemPara = document.createElement('p');
-    const dueDatePara = document.createElement('p');
-    const checkbox = document.createElement('input');
-
-    const deleteBtn = createBtn('deleteBtn', 'Delete', 'button', 'showDeleteTodoItemModal');
-    const editBtn = createBtn('editBtn', 'Edit', 'button', 'showEditTodoItemModal');
-
-    todoItemDiv.dataset.uuid = todoItem.uuid;
-    todoItemPara.textContent = todoItem.title;
-    todoItemPara.classList.add('project-name-para');
-    
-    // MINOR UPDATE - Break out into date formatter function.
-    const dateToday = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
-    const dueDateFormatted = intlFormatDistance(todoItem.dueDate, dateToday, {unit: 'day'});
-    const daysUntilDueDate = differenceInCalendarDays(todoItem.dueDate, dateToday);
-
-    if (daysUntilDueDate <= 7) {
-        dueDatePara.textContent = `Due Date: ${dueDateFormatted}`;
-    }
-
-    else {
-        dueDatePara.textContent = `Due Date: ${todoItem.dueDate}`;
-    }
-
-    checkbox.type = 'checkbox';
-    checkbox.dataset.purpose = 'statusCheckbox';
-
-    if (todoItem.status === 'complete') {
-        checkbox.checked = true;
-    }
-
-    else {
-        checkbox.checked = false;
-    }
-
-    const childrenToAppend = [checkbox, todoItemPara, dueDatePara, deleteBtn, editBtn];
-    appendChildren(todoItemDiv, childrenToAppend);
-
-    return todoItemDiv;
 }
 
 const addProjectBtn = (project) => {
